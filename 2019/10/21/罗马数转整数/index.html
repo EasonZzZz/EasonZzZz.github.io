@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Nice To Meet U</title>
+  <title>罗马数转整数 | Nice To Meet U</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Nice To Meet U">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="罗马数字包含以下七种字符: I(1), V(5), X(10), L(50), C(100), D(500), M(1000)，将一串罗马数转成整数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="罗马数转整数">
+<meta property="og:url" content="http://yoursite.com/2019/10/21/罗马数转整数/index.html">
 <meta property="og:site_name" content="Nice To Meet U">
+<meta property="og:description" content="罗马数字包含以下七种字符: I(1), V(5), X(10), L(50), C(100), D(500), M(1000)，将一串罗马数转成整数。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-21T08:47:48.223Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Nice To Meet U">
+<meta name="twitter:title" content="罗马数转整数">
+<meta name="twitter:description" content="罗马数字包含以下七种字符: I(1), V(5), X(10), L(50), C(100), D(500), M(1000)，将一串罗马数转成整数。">
   
     <link rel="alternative" href="/atom.xml" title="Nice To Meet U" type="application/atom+xml">
   
@@ -124,16 +128,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-罗马数转整数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-罗马数转整数" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/21/罗马数转整数/">罗马数转整数</a>
+    <h1 class="article-title" itemprop="name">
+      罗马数转整数
     </h1>
   
 
@@ -147,7 +149,24 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>罗马数字包含以下七种字符: I(1), V(5), X(10), L(50), C(100), D(500), M(1000)，将一串罗马数转成整数。</p>
-        
+<a id="more"></a>
+<p>通常情况下，罗马数字中小的数字在大的数字的右边。<br>但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。<br>一共有六个特例：</p>
+<ul>
+<li>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</li>
+<li>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 </li>
+<li>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。<h1 id="穷举法"><a href="#穷举法" class="headerlink" title="穷举法"></a>穷举法</h1></li>
+<li>首先将所有的组合添加到哈希表中，一共有13种</li>
+<li>然后遍历字符串，由于组合只有两类，一类是1个字符，另一类是2个字符，其中，2个字符优先级较高</li>
+<li>返回ans<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public int romanToInt(String s) &#123;</span><br><span class="line">    int ans = 0;</span><br><span class="line">    Map&lt;String, Integer&gt; map = new HashMap();</span><br><span class="line">    map.put(&quot;I&quot;, 1);</span><br><span class="line">    map.put(&quot;IV&quot;, 4);</span><br><span class="line">    map.put(&quot;V&quot;, 5);</span><br><span class="line">    map.put(&quot;IX&quot;, 9);</span><br><span class="line">    map.put(&quot;X&quot;, 10);</span><br><span class="line">    map.put(&quot;XL&quot;, 40);</span><br><span class="line">    map.put(&quot;L&quot;, 50);</span><br><span class="line">    map.put(&quot;XC&quot;, 90);</span><br><span class="line">    map.put(&quot;C&quot;, 100);</span><br><span class="line">    map.put(&quot;CD&quot;, 400);</span><br><span class="line">    map.put(&quot;D&quot;, 500);</span><br><span class="line">    map.put(&quot;CM&quot;, 900);</span><br><span class="line">    map.put(&quot;M&quot;, 1000);</span><br><span class="line"></span><br><span class="line">    for(int i = 0; i &lt; s.length();)&#123;</span><br><span class="line">        if(i+1 &lt; s.length() &amp;&amp; map.containsKey(s.substring(i, i+2)))&#123;</span><br><span class="line">            ans += map.get(s.substring(i,i+2));</span><br><span class="line">            i += 2;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            ans += map.get(s.substring(i,i+1));</span><br><span class="line">            i ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="更优解法"><a href="#更优解法" class="headerlink" title="更优解法"></a>更优解法</h1><p>因为通常情况下，罗马数字中小的数字在大的数字的右边，所以我们可以和下一个字符比大小，如果比它小，那么就是六种特例中的一种</p>
+<ul>
+<li>定义一个获取罗马字符对应数字的静态方法，使用switch来获取字符对应数字</li>
+<li>遍历字符串，比较当前字符和下一字符的数字大小，大于则加，小于则减<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">//静态方法获得罗马数对应的数字大小</span><br><span class="line">private static int getValue(char c) &#123;</span><br><span class="line">    switch (c) &#123;</span><br><span class="line">        case &apos;I&apos;:</span><br><span class="line">            return 1;</span><br><span class="line">        case &apos;V&apos;:</span><br><span class="line">            return 5;</span><br><span class="line">        case &apos;X&apos;:</span><br><span class="line">            return 10;</span><br><span class="line">        case &apos;L&apos;:</span><br><span class="line">            return 50;</span><br><span class="line">        case &apos;C&apos;:</span><br><span class="line">            return 100;</span><br><span class="line">        case &apos;D&apos;:</span><br><span class="line">            return 500;</span><br><span class="line">        case &apos;M&apos;:</span><br><span class="line">            return 1000;</span><br><span class="line">        default:</span><br><span class="line">            throw new IllegalArgumentException(&quot;Illegal character&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public int romanToInt(String s)&#123;</span><br><span class="line">    int ans = 0;</span><br><span class="line">    for(int i = 0; i &lt; s.length(); i++)&#123;</span><br><span class="line">        int t = getValue(s.charAt(i));</span><br><span class="line">        //i为最后一个时，直接加</span><br><span class="line">        if(i == n-1 || t &gt;= getValue(s.charAt(i+1)))&#123;</span><br><span class="line">            ans += t;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            ans -= t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
       
 
       
@@ -158,16 +177,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/21/罗马数转整数/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/10/21/罗马数转整数/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2019/10/20/快速幂等法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">快速幂等法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -187,449 +265,14 @@
 
 
 
-
   
-    <article id="post-快速幂等法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/20/快速幂等法/">快速幂等法</a>
-    </h1>
   
 
-        
-        <a href="/2019/10/20/快速幂等法/" class="archive-article-date">
-  	<time datetime="2019-10-20T06:08:02.904Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>实现 <strong>pow(x,n)</strong> ，即求x的n次幂。使用暴力法超时，因而使用快速幂等法。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/20/快速幂等法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-滑动窗口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/19/滑动窗口/">滑动窗口</a>
-    </h1>
   
 
-        
-        <a href="/2019/10/19/滑动窗口/" class="archive-article-date">
-  	<time datetime="2019-10-19T04:39:55.532Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>滑动窗口是数组/字符串问题中常用的抽象概念。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/19/滑动窗口/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-PicGo+Github实现床图" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/12/PicGo+Github实现床图/">PicGo + Github 图床</a>
-    </h1>
   
 
-        
-        <a href="/2019/10/12/PicGo+Github实现床图/" class="archive-article-date">
-  	<time datetime="2019-10-12T14:06:10.505Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>昨天用了七牛云实现了床图，但是突然发现免费的只有30天的时间，到了时间就会换域名。之前的图床就失效了，于是转而薅Github的羊毛。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/12/PicGo+Github实现床图/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Java学习之旅---单例模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/12/Java学习之旅---单例模式/">Java学习之旅---单例模式</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/12/Java学习之旅---单例模式/" class="archive-article-date">
-  	<time datetime="2019-10-12T14:06:10.504Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>郭克华老师在上课讲到的一种设计模式—单例模式。<br>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建 <strong>单一对象</strong> 的最佳方式。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/12/Java学习之旅---单例模式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hexo+gayhub" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/12/hexo+gayhub/">Hexo+gayhub搭建个人博客</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/12/hexo+gayhub/" class="archive-article-date">
-  	<time datetime="2019-10-12T14:06:10.503Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>经过<strong>学姐</strong>的安利，我用<strong>hexo+gayhub</strong>搭建起了第一个个人博客</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/12/hexo+gayhub/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-cnpm安装卸载模块" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/12/cnpm安装卸载模块/">npm(cnpm)安装/卸载模块</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/12/cnpm安装卸载模块/" class="archive-article-date">
-  	<time datetime="2019-10-12T14:06:10.501Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>因为发现七牛云不行，所以卸载了有关的插件。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/12/cnpm安装卸载模块/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-JDK-13配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/12/JDK-13配置/">JDK-13配置环境</a>
-    </h1>
-  
-
-        
-        <a href="/2019/10/12/JDK-13配置/" class="archive-article-date">
-  	<time datetime="2019-10-11T16:10:15.138Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>目前最新JDK-13的配置环境方法，虽然我也不懂为什么这样弄，但是能用就行。</p>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/10/12/JDK-13配置/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -652,8 +295,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
