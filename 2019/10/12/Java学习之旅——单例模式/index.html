@@ -51,20 +51,22 @@
   };
 </script>
 
-  <meta name="description" content="滑动窗口是数组/字符串问题中常用的抽象概念。">
-<meta name="keywords" content="Java,LeetCode">
+  <meta name="description" content="郭克华老师在上课讲到的一种设计模式—单例模式。单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建 单一对象 的最佳方式。">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="滑动窗口">
-<meta property="og:url" content="http://yoursite.com/2019/10/19/滑动窗口/index.html">
+<meta property="og:title" content="Java学习之旅————单例模式">
+<meta property="og:url" content="http://yoursite.com/2019/10/12/Java学习之旅——单例模式/index.html">
 <meta property="og:site_name" content="Nice To Meet U">
-<meta property="og:description" content="滑动窗口是数组/字符串问题中常用的抽象概念。">
+<meta property="og:description" content="郭克华老师在上课讲到的一种设计模式—单例模式。单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建 单一对象 的最佳方式。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-23T03:06:42.231Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/20190925152915.png">
+<meta property="og:updated_time" content="2019-10-23T11:57:11.083Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="滑动窗口">
-<meta name="twitter:description" content="滑动窗口是数组/字符串问题中常用的抽象概念。">
+<meta name="twitter:title" content="Java学习之旅————单例模式">
+<meta name="twitter:description" content="郭克华老师在上课讲到的一种设计模式—单例模式。单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建 单一对象 的最佳方式。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/20190925152915.png">
 
-<link rel="canonical" href="http://yoursite.com/2019/10/19/滑动窗口/">
+<link rel="canonical" href="http://yoursite.com/2019/10/12/Java学习之旅——单例模式/">
 
 
 <script id="page-configurations">
@@ -78,7 +80,7 @@
   };
 </script>
 
-  <title>滑动窗口 | Nice To Meet U</title>
+  <title>Java学习之旅————单例模式 | Nice To Meet U</title>
   
 
 
@@ -214,7 +216,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/19/滑动窗口/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/12/Java学习之旅——单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -227,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          滑动窗口
+          Java学习之旅————单例模式
         </h1>
 
         <div class="post-meta">
@@ -237,14 +239,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-10-19 12:39:55" itemprop="dateCreated datePublished" datetime="2019-10-19T12:39:55+08:00">2019-10-19</time>
+              <time title="创建时间：2019-10-12 22:06:10" itemprop="dateCreated datePublished" datetime="2019-10-12T22:06:10+08:00">2019-10-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-23 11:06:42" itemprop="dateModified" datetime="2019-10-23T11:06:42+08:00">2019-10-23</time>
+                <time title="修改时间：2019-10-23 19:57:11" itemprop="dateModified" datetime="2019-10-23T19:57:11+08:00">2019-10-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,8 +254,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法之旅/" itemprop="url" rel="index">
-                    <span itemprop="name">算法之旅</span>
+                  <a href="/categories/Java学习/" itemprop="url" rel="index">
+                    <span itemprop="name">Java学习</span>
                   </a>
                 </span>
             </span>
@@ -276,14 +278,34 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>滑动窗口是数组/字符串问题中常用的抽象概念。</p>
+        <p>郭克华老师在上课讲到的一种设计模式—单例模式。<br>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建 <strong>单一对象</strong> 的最佳方式。</p>
 <a id="more"></a>
-<h1 id="无重复字符的最长子串-给定一个字符串，请你找出其中-不含有重复字符-的-最长子串-的长度"><a href="#无重复字符的最长子串-给定一个字符串，请你找出其中-不含有重复字符-的-最长子串-的长度" class="headerlink" title="无重复字符的最长子串 :给定一个字符串，请你找出其中 不含有重复字符 的 最长子串 的长度"></a><strong>无重复字符的最长子串</strong> :给定一个字符串，请你找出其中 <strong>不含有重复字符</strong> 的 <strong>最长子串</strong> 的长度</h1><h2 id="暴力法"><a href="#暴力法" class="headerlink" title="暴力法"></a>暴力法</h2><p>如果使用暴力法，检查所有的子字符串，则时间复杂度为O(n^3)，耗费时间过多。暴力法会反复检查一个字符串是否含有重复的字符，浪费时间。</p>
-<h2 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h2><p>窗口通常是在数组/字符串中由开始和结束索引定义的一系列元素的集合，即 [i, j）（左闭，右开）。而滑动窗口是可以将两个边界向某一方向“滑动”的窗口。<br>-例:[i, j）向右滑动1个元素，则它将变为[i+1, j+1)<br>回到我们的问题，我们使用 HashSet 将字符存储在当前窗口 [i, j)（最初 j = i）中。 然后我们向右侧滑动索引 j，如果它不在 HashSet 中，我们会继续滑动 j。直到 s[j] 已经存在于 HashSet 中。此时，我们找到的没有重复字符的最长子字符串将会以索引 i 开头。如果我们对所有的 i 这样做，就可以得到答案。</p>
-<h2 id="优化版的滑动窗口"><a href="#优化版的滑动窗口" class="headerlink" title="优化版的滑动窗口"></a>优化版的滑动窗口</h2><p>上述的方法最多需要执行 2n 个步骤。事实上，它可以被进一步优化为仅需要 n 个步骤。我们可以定义字符到索引的映射，而不是使用集合来判断一个字符是否存在。 当我们找到重复的字符时，我们可以立即跳过该窗口。</p>
-<ul>
-<li>也就是说，如果 j 对应的字符与[i, j-1]重复，则不再让 i++，而是直接跳过[i, j],令 i=j+1;<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, n = s.length();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//字符对应的索引为下一次不重复的位置，即下一位置</span></span><br><span class="line">        <span class="comment">//例：j这个地方与前面重复了，则下一次不重复的位置为j+1</span></span><br><span class="line">        <span class="comment">//声明HashMap，形成字符到索引的映射</span></span><br><span class="line">        Map&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>, i = <span class="number">0</span>; j &lt; n; j++)&#123;</span><br><span class="line">            <span class="comment">//如果map中有s[j],则更新i</span></span><br><span class="line">            <span class="keyword">if</span>(map.containsKey(s.charAt(j)))&#123;</span><br><span class="line">                i = Math.max(map.get(s.charAt(j)), i);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//更新ans</span></span><br><span class="line">            ans = Math.max(ans, j-i+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//将s[j]和它到索引的映射(下一个不重复的位置）加入map</span></span><br><span class="line">            map.put(s.charAt(j), j+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<h1 id="那么问题来了，为什么创建单一对象呢"><a href="#那么问题来了，为什么创建单一对象呢" class="headerlink" title="那么问题来了，为什么创建单一对象呢?"></a>那么问题来了，为什么创建单一对象呢?</h1><p>有一些实例只需要创建一次就够了，例如：一个班级只有一个班主任，Windows系统只有一个Task Manager(任务管理器)</p>
+<h1 id="单例模式有什么优缺点呢？"><a href="#单例模式有什么优缺点呢？" class="headerlink" title="单例模式有什么优缺点呢？"></a>单例模式有什么优缺点呢？</h1><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>1.在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销毁实例（比如管理学院首页页面缓存）。<br></li>
+<li>2.避免对资源的多重占用（比如写文件操作）。</li>
+<li><h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2></li>
+<li>没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外面怎么样来实例化。<br></li>
 </ul>
+<hr>
+<h1 id="如何实现单例模式"><a href="#如何实现单例模式" class="headerlink" title="如何实现单例模式"></a>如何实现单例模式</h1><p>我们将创建一个 SingleObject 类。SingleObject 类有它的 <strong>私有构造函数</strong> 和本身的一个 <strong>静态实例</strong>。<br>SingleObject 类提供了一个静态方法，供外界获取它的静态实例。SingletonPatternDemo，我们的演示类使用 SingleObject 类来获取 SingleObject 对象。<br><img src="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/20190925152915.png" alt></p>
+<h2 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h2><p>创建一个SingleObject类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingleObject</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建SingleObject的一个私有静态对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingleObject instance = <span class="keyword">new</span> SingObject();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造函数私有化</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingleObject</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//给外面一个接口，返回唯一可用对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingleObject <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h2><p>在外界声明个SingleObject的引用，获取该唯一对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SingleObject instance = SingleObject.getInstance();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="这里的实现方式只是一个大致的抽象方法，更详细的如下"><a href="#这里的实现方式只是一个大致的抽象方法，更详细的如下" class="headerlink" title="这里的实现方式只是一个大致的抽象方法，更详细的如下"></a>这里的实现方式只是一个大致的抽象方法，更详细的如下</h1><ul>
+<li>懒汉式—线程不安全：最基础的实现方式，线程上下文单例，不需要共享给所有线程，也不需要加synchronize之类的锁，以提高性能</li>
+<li>懒汉式—线程安全：加上synchronize之类保证线程安全的基础上的懒汉模式，相对性能很低，大部分时间并不需要同步</li>
+<li>饿汉方式。指全局的单例实例在类装载时构建。</li>
+<li>双检锁式。在懒汉式基础上利用synchronize关键字和volatile关键字确保第一次创建时没有线程间竞争而产生多个实例，仅第一次创建时同步，性能相对较高</li>
+<li>登记式。作为创建类的全局属性存在，创建类被装载时创建</li>
+<li>枚举。java中枚举类本身也是一种单例模式</li>
+</ul>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>单例模式是设计模式中最简单的形式之一。这一模式的目的是使得类的一个对象成为系统中的唯一实例。它有很多种实现方式，但是文中只给出了大致的思路，以后再学习更进一步的实现方式。</p>
 
     </div>
 
@@ -294,23 +316,22 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i>Java</a>
-              <a href="/tags/LeetCode/" rel="tag"><i class="fa fa-tag"></i>LeetCode</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/10/12/PicGo+Github实现床图/" rel="next" title="PicGo + Github 图床">
-                  <i class="fa fa-chevron-left"></i> PicGo + Github 图床
+                <a href="/2019/10/12/cnpm安装卸载模块/" rel="next" title="npm(cnpm)安装/卸载模块">
+                  <i class="fa fa-chevron-left"></i> npm(cnpm)安装/卸载模块
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/10/20/快速幂等法/" rel="prev" title="快速幂等法">
-                  快速幂等法 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/10/12/PicGo+Github实现床图/" rel="prev" title="PicGo + Github 图床">
+                  PicGo + Github 图床 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -350,7 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#无重复字符的最长子串-给定一个字符串，请你找出其中-不含有重复字符-的-最长子串-的长度"><span class="nav-number">1.</span> <span class="nav-text">无重复字符的最长子串 :给定一个字符串，请你找出其中 不含有重复字符 的 最长子串 的长度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#暴力法"><span class="nav-number">1.1.</span> <span class="nav-text">暴力法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#滑动窗口"><span class="nav-number">1.2.</span> <span class="nav-text">滑动窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化版的滑动窗口"><span class="nav-number">1.3.</span> <span class="nav-text">优化版的滑动窗口</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#那么问题来了，为什么创建单一对象呢"><span class="nav-number">1.</span> <span class="nav-text">那么问题来了，为什么创建单一对象呢?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单例模式有什么优缺点呢？"><span class="nav-number">2.</span> <span class="nav-text">单例模式有什么优缺点呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何实现单例模式"><span class="nav-number">3.</span> <span class="nav-text">如何实现单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-1"><span class="nav-number">3.1.</span> <span class="nav-text">Step 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-2"><span class="nav-number">3.2.</span> <span class="nav-text">Step 2</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#这里的实现方式只是一个大致的抽象方法，更详细的如下"><span class="nav-number">4.</span> <span class="nav-text">这里的实现方式只是一个大致的抽象方法，更详细的如下</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
