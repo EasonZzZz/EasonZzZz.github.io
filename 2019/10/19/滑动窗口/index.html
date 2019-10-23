@@ -14,6 +14,7 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
 <script id="hexo-configurations">
@@ -27,7 +28,7 @@
     copycode: {"enable":true,"show_result":true,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
+    fancybox: true,
     mediumzoom: false,
     lazyload: false,
     pangu: false,
@@ -58,7 +59,7 @@
 <meta property="og:site_name" content="Nice To Meet U">
 <meta property="og:description" content="滑动窗口是数组/字符串问题中常用的抽象概念。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-22T04:29:40.929Z">
+<meta property="og:updated_time" content="2019-10-23T03:06:42.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="滑动窗口">
 <meta name="twitter:description" content="滑动窗口是数组/字符串问题中常用的抽象概念。">
@@ -243,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-22 12:29:40" itemprop="dateModified" datetime="2019-10-22T12:29:40+08:00">2019-10-22</time>
+                <time title="修改时间：2019-10-23 11:06:42" itemprop="dateModified" datetime="2019-10-23T11:06:42+08:00">2019-10-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -258,6 +259,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -274,7 +282,7 @@
 <h2 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h2><p>窗口通常是在数组/字符串中由开始和结束索引定义的一系列元素的集合，即 [i, j）（左闭，右开）。而滑动窗口是可以将两个边界向某一方向“滑动”的窗口。<br>-例:[i, j）向右滑动1个元素，则它将变为[i+1, j+1)<br>回到我们的问题，我们使用 HashSet 将字符存储在当前窗口 [i, j)（最初 j = i）中。 然后我们向右侧滑动索引 j，如果它不在 HashSet 中，我们会继续滑动 j。直到 s[j] 已经存在于 HashSet 中。此时，我们找到的没有重复字符的最长子字符串将会以索引 i 开头。如果我们对所有的 i 这样做，就可以得到答案。</p>
 <h2 id="优化版的滑动窗口"><a href="#优化版的滑动窗口" class="headerlink" title="优化版的滑动窗口"></a>优化版的滑动窗口</h2><p>上述的方法最多需要执行 2n 个步骤。事实上，它可以被进一步优化为仅需要 n 个步骤。我们可以定义字符到索引的映射，而不是使用集合来判断一个字符是否存在。 当我们找到重复的字符时，我们可以立即跳过该窗口。</p>
 <ul>
-<li>也就是说，如果 j 对应的字符与[i, j-1]重复，则不再让 i++，而是直接跳过[i, j],令 i=j+1;<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int lengthOfLongestSubstring(String s) &#123;</span><br><span class="line">        int ans = 0, n = s.length();</span><br><span class="line"></span><br><span class="line">        //字符对应的索引为下一次不重复的位置，即下一位置</span><br><span class="line">        //例：j这个地方与前面重复了，则下一次不重复的位置为j+1</span><br><span class="line">        //声明HashMap，形成字符到索引的映射</span><br><span class="line">        Map&lt;Character, Integer&gt; map = new HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        for(int j = 0, i = 0; j &lt; n; j++)&#123;</span><br><span class="line">            //如果map中有s[j],则更新i</span><br><span class="line">            if(map.containsKey(s.charAt(j)))&#123;</span><br><span class="line">                i = Math.max(map.get(s.charAt(j)), i);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            //更新ans</span><br><span class="line">            ans = Math.max(ans, j-i+1);</span><br><span class="line"></span><br><span class="line">            //将s[j]和它到索引的映射(下一个不重复的位置）加入map</span><br><span class="line">            map.put(s.charAt(j), j+1);</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>也就是说，如果 j 对应的字符与[i, j-1]重复，则不再让 i++，而是直接跳过[i, j],令 i=j+1;<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, n = s.length();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//字符对应的索引为下一次不重复的位置，即下一位置</span></span><br><span class="line">        <span class="comment">//例：j这个地方与前面重复了，则下一次不重复的位置为j+1</span></span><br><span class="line">        <span class="comment">//声明HashMap，形成字符到索引的映射</span></span><br><span class="line">        Map&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>, i = <span class="number">0</span>; j &lt; n; j++)&#123;</span><br><span class="line">            <span class="comment">//如果map中有s[j],则更新i</span></span><br><span class="line">            <span class="keyword">if</span>(map.containsKey(s.charAt(j)))&#123;</span><br><span class="line">                i = Math.max(map.get(s.charAt(j)), i);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//更新ans</span></span><br><span class="line">            ans = Math.max(ans, j-i+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//将s[j]和它到索引的映射(下一个不重复的位置）加入map</span></span><br><span class="line">            map.put(s.charAt(j), j+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 
     </div>
@@ -409,6 +417,26 @@
   </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -430,6 +458,8 @@
   
   <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
   <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
   <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 <script src="/js/utils.js?v=7.4.2"></script><script src="/js/motion.js?v=7.4.2"></script>
