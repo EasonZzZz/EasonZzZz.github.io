@@ -59,7 +59,7 @@
 <meta property="og:site_name" content="Nice To Meet U">
 <meta property="og:description" content="比快排更快的算法，在理想情况下，甚至可以做到线性时间的复杂度">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-05T09:03:08.811Z">
+<meta property="og:updated_time" content="2019-11-05T09:05:05.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计数排序和桶排序">
 <meta name="twitter:description" content="比快排更快的算法，在理想情况下，甚至可以做到线性时间的复杂度">
@@ -238,7 +238,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2019-11-05 15:51:57 / 修改时间：17:03:08" itemprop="dateCreated datePublished" datetime="2019-11-05T15:51:57+08:00">2019-11-05</time>
+              <time title="创建时间：2019-11-05 15:51:57 / 修改时间：17:05:05" itemprop="dateCreated datePublished" datetime="2019-11-05T15:51:57+08:00">2019-11-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -289,15 +289,15 @@
 <li>倒序遍历数组，从统计数组找到正确的位置，输出到结果数组<blockquote>
 <p>为什么倒序？为了不改变原有顺序，使之稳定</p>
 </blockquote>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] countSort(<span class="keyword">int</span>[] array)&#123;</span><br><span class="line">     <span class="keyword">int</span> max = array[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">int</span> min = array[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++)&#123;</span><br><span class="line">         <span class="keyword">if</span> (array[i] &gt; max) max = array[i];</span><br><span class="line">         <span class="keyword">if</span> (array[i] &lt; min) min = array[i];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">int</span> d = max -min;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//填写统计数组</span></span><br><span class="line">     <span class="keyword">int</span>[] countArray = <span class="keyword">new</span> <span class="keyword">int</span> [d+<span class="number">1</span>];</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++)</span><br><span class="line">         countArray[array[i] - min]++;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//统计数组变形</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; countArray.length; i++)</span><br><span class="line">         countArray[i] += countArray[i-<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">     <span class="comment">//倒序遍历原始数组</span></span><br><span class="line">     <span class="keyword">int</span>[] sortedArray = <span class="keyword">new</span> <span class="keyword">int</span>[array.length];</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span>  i = array.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">         sortedArray[countArray[array [i] - min] - <span class="number">1</span>] = array[i];</span><br><span class="line">         countArray[array [i] - min]--;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> sortedArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 </li>
 </ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] countSort(<span class="keyword">int</span>[] array)&#123;</span><br><span class="line">     <span class="keyword">int</span> max = array[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">int</span> min = array[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++)&#123;</span><br><span class="line">         <span class="keyword">if</span> (array[i] &gt; max) max = array[i];</span><br><span class="line">         <span class="keyword">if</span> (array[i] &lt; min) min = array[i];</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">int</span> d = max -min;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//填写统计数组</span></span><br><span class="line">     <span class="keyword">int</span>[] countArray = <span class="keyword">new</span> <span class="keyword">int</span> [d+<span class="number">1</span>];</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++)</span><br><span class="line">         countArray[array[i] - min]++;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//统计数组变形</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; countArray.length; i++)</span><br><span class="line">         countArray[i] += countArray[i-<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">     <span class="comment">//倒序遍历原始数组</span></span><br><span class="line">     <span class="keyword">int</span>[] sortedArray = <span class="keyword">new</span> <span class="keyword">int</span>[array.length];</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span>  i = array.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">         sortedArray[countArray[array [i] - min] - <span class="number">1</span>] = array[i];</span><br><span class="line">         countArray[array [i] - min]--;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> sortedArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
 <li>时间复杂度仅为O(n+m)</li>
-<li>空间复杂度为O(m)<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3></li>
+<li>空间复杂度为O(m)</li>
 </ul>
-<ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
 <li>当数列最大和最小值差距过大时，空间浪费，时间复杂度增加</li>
 <li>必须为整数</li>
 </ol>
@@ -318,8 +318,9 @@
 
 <h2 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h2><h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul>
 <li>时间复杂度仅为O(n)</li>
-<li>空间复杂度为O(m)<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3>不稳定，第一个桶有n-1个元素，最后一个桶只有一个，此时时间复杂度退化为O(nlogn)，而且白白的创建了许多空桶</li>
+<li>空间复杂度为O(m)</li>
 </ul>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>不稳定，第一个桶有n-1个元素，最后一个桶只有一个，此时时间复杂度退化为O(nlogn)，而且白白的创建了许多空桶</p>
 
     </div>
 
