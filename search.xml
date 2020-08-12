@@ -610,11 +610,61 @@
     
     
     <entry>
-      <title>Java异常处理</title>
-      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"/>
-      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/</url>
+      <title>Java IO操作</title>
+      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%20IO%E6%93%8D%E4%BD%9C/"/>
+      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%20IO%E6%93%8D%E4%BD%9C/</url>
       
-        <content type="html"><![CDATA[<h1 id="认识异常"><a class="markdownIt-Anchor" href="#认识异常"></a> 认识异常</h1><ul><li>java.lang.Exception</li><li>程序出现异常，有什么危害？<ol><li>异常退出，错误提示</li><li>程序在出现异常之后，后面的代码将不会执行</li></ol></li></ul><h1 id="解决异常"><a class="markdownIt-Anchor" href="#解决异常"></a> 解决异常</h1><ol><li>预见所有异常可能，进行约束。很难做到</li><li>一网打尽  try-catch-finally<ul><li>用try块来管理可能出现异常的代码</li><li>用catch块处理某种异常</li><li>用finally块包起来不管异常与否都要运行的代码，保证程序安全性</li></ul> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">// 可能出现异常的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">    <span class="comment">// 处理异常</span></span><br><span class="line">&#125; <span class="keyword">finally</span>&#123;</span><br><span class="line">    <span class="comment">// 不管异常与否都要运行的代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol><ul><li>try至少接一个catch或finally，而且两个之间不能有代码</li><li>catch能有多个(从小到大排序)，但finally至多一个</li><li>只有try-finally必须throws异常</li><li>try中异常后的代码不执行</li><li>finally最大的特点是：即使在try中跳出了代码块，甚至return跳出了函数，finally内的代码仍然能运行</li></ul><h1 id="抛出异常"><a class="markdownIt-Anchor" href="#抛出异常"></a> 抛出异常</h1><ul><li><strong>throw：在函数中抛出一个异常对象</strong></li><li><strong>throws：标注该函数可能会抛出某种异常</strong></li><li>一般情况下，标注了throws的函数，调用时一定要用try-catch处理异常或者再次抛出(直至到JVM，它也不会处理，出现异常的话只好死给你看)</li><li>RuntimeException在编译时不会报错，但是在运行时会出错，相当于main函数抛出异常</li><li>自定义异常：extends Exception即可</li></ul>]]></content>
+        <content type="html"><![CDATA[<h1 id="io操作"><a class="markdownIt-Anchor" href="#io操作"></a> IO操作</h1><ul><li><strong>IO：输入输出，站在内存角度</strong></li><li>输入输出，最典型的是文件输入输出<ul><li>文件输入：将已有文件的内容输入内存-&gt;文件读</li><li>文件输出：将内存数据输出到文件-&gt;文件写</li></ul></li><li>IO操作支持的API一般保存在<strong><a href="http://java.io" target="_blank" rel="noopener">java.io</a></strong>包</li></ul><h1 id="file类"><a class="markdownIt-Anchor" href="#file类"></a> File类</h1><ol><li>最常见的构造函数：<ul><li>public File(String pathname)</li></ul></li></ol><ul><li>Windows系统分隔符&quot;\&quot;，但是要用&quot;\\“表示，因为”\&quot;转义字符</li><li>Unix系统分隔符是&quot;/&quot;，但是Windows系统也能使用，所以一般用&quot;/&quot;</li></ul><ol start="2"><li>常用方法：<ul><li>getAbsolutePath()，exists()，isDirectory()，isFile()，length()，delete()……</li><li>没有复制文件(读取，再新建)，移动文件(读取，删除，再新建)的功能</li><li>文件的length用字节表示，删除为永久删除</li></ul></li></ol><h1 id="读写文件"><a class="markdownIt-Anchor" href="#读写文件"></a> 读写文件</h1><ul><li>流(Stream)：就是指像水流一样长长的一串连续的东西。在很多时候，流(Stream)是字节流(Byte Steram)的简称，也就是长长的一串字节。</li></ul><h2 id="读文件"><a class="markdownIt-Anchor" href="#读文件"></a> 读文件</h2><ol><li><strong>InputStream</strong><ol><li><strong>FileInputStream</strong>：字节流，支持类型多，但是对双字节字符支持不佳(不能识别中文)</li><li><strong>BufferedInputStream</strong>(常用)：带缓冲，速度较快，但只能使用read或readLine</li></ol></li><li><strong>Reader</strong><ol><li><strong>FileReader</strong>：字符流，一般支持字符，对双字节字符支持较好(可以识别中文)</li><li><strong>BufferedReader</strong>(常用)：带缓冲，速度较快</li></ol></li></ol><ul><li>readLine：按行读，在网络编程中应用较多，会阻塞</li><li>flush：将缓冲区中的数据立马存入硬盘</li></ul><h2 id="写文件"><a class="markdownIt-Anchor" href="#写文件"></a> 写文件</h2><ol><li><strong>OutputStream</strong><ol><li><strong>FileOutputStream</strong>：字节流，对中文支持尚可</li><li><strong>BufferedOutputStream</strong>：带缓冲，速度较快</li></ol></li><li><strong>Writer</strong><ol><li><strong>FileWriter</strong>：字符流</li><li><strong>BufferedWriter</strong>(常用)：带缓冲，速度较快</li></ol></li><li><strong>PrintStream</strong></li></ol><h2 id="randomaccessfile"><a class="markdownIt-Anchor" href="#randomaccessfile"></a> RandomAccessFile</h2><ul><li>随机访问，在文件随机位置定义一个起始点，从起始点读写，有着各种类型的读写</li><li>在于可以随意在文件中间定义起始点：seek(long pos) 函数</li><li>public RandomAccessFile(String name，String mode) throws FileNotFountException</li></ul><h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2><ul><li>一般使用BufferedReader，PrintStream</li><li>流使用完后要关闭，关闭最外层流，内层流自动关闭</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Java基本语法</title>
+      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/"/>
+      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<ul><li>立即数系统默认为int/double<ul><li>如要赋值一个long，必须要在最后加上L符号表示这是个long类型</li></ul></li><li>数组初始化<blockquote><p>int[] a = new int[]{1,2,3};</p></blockquote></li><li>类型转换<ul><li>低精度可以直接赋给高精度<blockquote><p>byte &lt; short &lt; char &lt; int &lt; long &lt; float &lt; double<br>java中的char是十六位，双字节，因此比short大</p></blockquote></li><li>高精度不能直接赋值给低精度：需要强制类型转换</li><li>不同类型之间的运算结果为<strong>精度最高的类型</strong></li></ul></li><li>基本数据类型和字符串转换<ul><li>String.valueOf(各种基本类型)，返回String对象</li><li>XXX.parseXXX(字符串)，返回的是primitive类型，而不是对象</li></ul></li><li>文档注释：&quot;/**&quot; 开头，&quot;*/&quot;结束</li><li><strong>字符串相加(实为连接)：&quot;+&quot;是Java中唯一重载过的一个字符</strong></li><li>&amp;&amp; 和 || 都是短路运算符，即如果第一个可以判断出表达式的TF，就不再运算后面的内容</li><li>运算符的优先级：<ul><li>点号，括号，分号，逗号</li><li>算术运算符</li><li>移位运算符</li><li>关系运算符</li><li>逻辑运算符</li><li>赋值运算符</li></ul></li><li>Java流程<ul><li>选择：if-else switch-case(会让你判断结果)</li><li>循环：for while do-while break continue</li><li>注意：判断中只能为boolean类型，不能为数值</li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Java多线程开发</title>
+      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
+      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BC%80%E5%8F%91/</url>
+      
+        <content type="html"><![CDATA[<h1 id="认识多线程"><a class="markdownIt-Anchor" href="#认识多线程"></a> 认识多线程</h1><ul><li>进程(process)：操作系统层面，计算机能够“同时”运行的各个应用程序；管理上，每个进程占用独自的内存资源分时间片</li><li>线程(Thread)：应用程序层面，程序能够“同时”运行的各个任务；管理上，各个线程共用进程的内存资源<ul><li>例：一个程序，可以下载文件，同时播放音乐。两个任务分别运行。</li></ul></li></ul><h1 id="开发线程"><a class="markdownIt-Anchor" href="#开发线程"></a> 开发线程</h1><ul><li>关键是<strong>将需要用线程管理的代码（不依赖主程序，可以同时运行的代码），放在线程中</strong>。</li></ul><h2 id="方法1继承-thread-类开发多线程"><a class="markdownIt-Anchor" href="#方法1继承-thread-类开发多线程"></a> 方法1：继承 <em><strong>Thread</strong></em> 类开发多线程</h2><ol><li><p>继承 <strong>java.lang.Thread</strong> 类开发多线程</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span></span><br></pre></td></tr></table></figure></li><li><p>在这个类重写 <strong>Thread</strong> 类中的<strong>run函数</strong>：</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure></li><li><p>实例化线程对象，调用其 <strong>start()</strong> 函数启动该线程</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyThread thread = <span class="keyword">new</span> MyThread();</span><br><span class="line">thread.start();</span><br></pre></td></tr></table></figure></li></ol><h2 id="方法2实现-runnable-接口开发多线程"><a class="markdownIt-Anchor" href="#方法2实现-runnable-接口开发多线程"></a> 方法2：实现 <em><strong>Runnable</strong></em> 接口开发多线程</h2><ol><li><p>编写一个类，实现 <strong>java.lang.Runnable</strong> 接口</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span></span><br></pre></td></tr></table></figure></li><li><p>在这个类中重写 <strong>java.lang.Runnable</strong> 接口中的函数：</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure></li><li><p>实例化 <strong>java.lang.Thread</strong> 对象，实例化上面编写的 <strong>Runnable</strong> 实现类，将后者传入 <strong>Thread</strong> 对象的构造函数，调用 <strong>Thread</strong> 对象的 <strong>start()</strong> 函数来启动线程</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Runnable threadJob = <span class="keyword">new</span> MyRunnable();</span><br><span class="line">Thread thread = <span class="keyword">new</span> Thread(threadJob);</span><br><span class="line">thread.start();</span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line"><span class="comment">// new Thread(new MyRunnable()).start();</span></span><br></pre></td></tr></table></figure></li></ol><h2 id="两种方法比较"><a class="markdownIt-Anchor" href="#两种方法比较"></a> 两种方法比较</h2><ol><li>第一种每个对象都是一个线程，而第二种每个对象不是一个线程，必须将其传入Thread对象才能运行</li><li>第一种每个线程都有自己的成员变量，而第二种共享成员变量</li><li>Java不支持多重继承，只能继承一个类，但是可以实现多个接口，第一种方法虽然较简单，但是扩展性没有第二种强</li></ol><h1 id="线程控制"><a class="markdownIt-Anchor" href="#线程控制"></a> 线程控制</h1><ul><li><strong>启动(start)、暂停(suspend)、继续(resume)、停止(stop)，销毁(destroy)</strong></li><li>Thread的suspend(暂停)，resume(继续)虽然可以使用，但是由于有死锁危险，被废弃。因为线程暂停时，并不释放线程所拥有的资源。<ul><li>解决方法：建议让<strong>线程暂停，等价于让线程结束运行</strong>。因为结束运行会释放资源；线程结束运行的标志：run函数运行完毕。线程继续相当于新开一个线程，在原来线程基础上运行。所以线程暂停时，要注意保护现场。</li></ul></li></ul>]]></content>
       
       
       <categories>
@@ -660,11 +710,11 @@
     
     
     <entry>
-      <title>Java IO操作</title>
-      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%20IO%E6%93%8D%E4%BD%9C/"/>
-      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%20IO%E6%93%8D%E4%BD%9C/</url>
+      <title>Java异常处理</title>
+      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"/>
+      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/</url>
       
-        <content type="html"><![CDATA[<h1 id="io操作"><a class="markdownIt-Anchor" href="#io操作"></a> IO操作</h1><ul><li><strong>IO：输入输出，站在内存角度</strong></li><li>输入输出，最典型的是文件输入输出<ul><li>文件输入：将已有文件的内容输入内存-&gt;文件读</li><li>文件输出：将内存数据输出到文件-&gt;文件写</li></ul></li><li>IO操作支持的API一般保存在<strong><a href="http://java.io" target="_blank" rel="noopener">java.io</a></strong>包</li></ul><h1 id="file类"><a class="markdownIt-Anchor" href="#file类"></a> File类</h1><ol><li>最常见的构造函数：<ul><li>public File(String pathname)</li></ul></li></ol><ul><li>Windows系统分隔符&quot;\&quot;，但是要用&quot;\\“表示，因为”\&quot;转义字符</li><li>Unix系统分隔符是&quot;/&quot;，但是Windows系统也能使用，所以一般用&quot;/&quot;</li></ul><ol start="2"><li>常用方法：<ul><li>getAbsolutePath()，exists()，isDirectory()，isFile()，length()，delete()……</li><li>没有复制文件(读取，再新建)，移动文件(读取，删除，再新建)的功能</li><li>文件的length用字节表示，删除为永久删除</li></ul></li></ol><h1 id="读写文件"><a class="markdownIt-Anchor" href="#读写文件"></a> 读写文件</h1><ul><li>流(Stream)：就是指像水流一样长长的一串连续的东西。在很多时候，流(Stream)是字节流(Byte Steram)的简称，也就是长长的一串字节。</li></ul><h2 id="读文件"><a class="markdownIt-Anchor" href="#读文件"></a> 读文件</h2><ol><li><strong>InputStream</strong><ol><li><strong>FileInputStream</strong>：字节流，支持类型多，但是对双字节字符支持不佳(不能识别中文)</li><li><strong>BufferedInputStream</strong>(常用)：带缓冲，速度较快，但只能使用read或readLine</li></ol></li><li><strong>Reader</strong><ol><li><strong>FileReader</strong>：字符流，一般支持字符，对双字节字符支持较好(可以识别中文)</li><li><strong>BufferedReader</strong>(常用)：带缓冲，速度较快</li></ol></li></ol><ul><li>readLine：按行读，在网络编程中应用较多，会阻塞</li><li>flush：将缓冲区中的数据立马存入硬盘</li></ul><h2 id="写文件"><a class="markdownIt-Anchor" href="#写文件"></a> 写文件</h2><ol><li><strong>OutputStream</strong><ol><li><strong>FileOutputStream</strong>：字节流，对中文支持尚可</li><li><strong>BufferedOutputStream</strong>：带缓冲，速度较快</li></ol></li><li><strong>Writer</strong><ol><li><strong>FileWriter</strong>：字符流</li><li><strong>BufferedWriter</strong>(常用)：带缓冲，速度较快</li></ol></li><li><strong>PrintStream</strong></li></ol><h2 id="randomaccessfile"><a class="markdownIt-Anchor" href="#randomaccessfile"></a> RandomAccessFile</h2><ul><li>随机访问，在文件随机位置定义一个起始点，从起始点读写，有着各种类型的读写</li><li>在于可以随意在文件中间定义起始点：seek(long pos) 函数</li><li>public RandomAccessFile(String name，String mode) throws FileNotFountException</li></ul><h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2><ul><li>一般使用BufferedReader，PrintStream</li><li>流使用完后要关闭，关闭最外层流，内层流自动关闭</li></ul>]]></content>
+        <content type="html"><![CDATA[<h1 id="认识异常"><a class="markdownIt-Anchor" href="#认识异常"></a> 认识异常</h1><ul><li>java.lang.Exception</li><li>程序出现异常，有什么危害？<ol><li>异常退出，错误提示</li><li>程序在出现异常之后，后面的代码将不会执行</li></ol></li></ul><h1 id="解决异常"><a class="markdownIt-Anchor" href="#解决异常"></a> 解决异常</h1><ol><li>预见所有异常可能，进行约束。很难做到</li><li>一网打尽  try-catch-finally<ul><li>用try块来管理可能出现异常的代码</li><li>用catch块处理某种异常</li><li>用finally块包起来不管异常与否都要运行的代码，保证程序安全性</li></ul> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">// 可能出现异常的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">    <span class="comment">// 处理异常</span></span><br><span class="line">&#125; <span class="keyword">finally</span>&#123;</span><br><span class="line">    <span class="comment">// 不管异常与否都要运行的代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol><ul><li>try至少接一个catch或finally，而且两个之间不能有代码</li><li>catch能有多个(从小到大排序)，但finally至多一个</li><li>只有try-finally必须throws异常</li><li>try中异常后的代码不执行</li><li>finally最大的特点是：即使在try中跳出了代码块，甚至return跳出了函数，finally内的代码仍然能运行</li></ul><h1 id="抛出异常"><a class="markdownIt-Anchor" href="#抛出异常"></a> 抛出异常</h1><ul><li><strong>throw：在函数中抛出一个异常对象</strong></li><li><strong>throws：标注该函数可能会抛出某种异常</strong></li><li>一般情况下，标注了throws的函数，调用时一定要用try-catch处理异常或者再次抛出(直至到JVM，它也不会处理，出现异常的话只好死给你看)</li><li>RuntimeException在编译时不会报错，但是在运行时会出错，相当于main函数抛出异常</li><li>自定义异常：extends Exception即可</li></ul>]]></content>
       
       
       <categories>
@@ -715,56 +765,6 @@
       <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</url>
       
         <content type="html"><![CDATA[<h1 id="ip和port"><a class="markdownIt-Anchor" href="#ip和port"></a> IP和Port</h1><ol><li>如何定位到某台电脑？<ul><li><strong>IP地址</strong></li><li>IPV4：32位，分割成4个&quot;8位二进制数&quot;，2019.11.26耗尽</li><li>IPV6：128位</li></ul></li><li>确定IP后，如何确定特定的网络应用程序？<ul><li><strong>端口(Port)</strong></li><li>0~65535，其中0~1024被占用(HTTP:80)</li></ul></li></ol><ul><li>IP确定电脑地址，Port确定应用程序，实现计算机之间的相互通讯</li></ul><h1 id="tcp和udp"><a class="markdownIt-Anchor" href="#tcp和udp"></a> TCP和UDP</h1><ul><li>TCP(Transmission Control Protocol)<ul><li>基于连接，只有C/S两端连接上才能通信</li><li>打电话</li></ul></li><li>UDP(User Datagram Protocol)<ul><li>基于报文，只传送信息，并不保证信息传送一定成功，性能好</li><li>写信</li></ul></li></ul><h1 id="cs模式"><a class="markdownIt-Anchor" href="#cs模式"></a> C/S模式</h1><ul><li>Client/Server模式</li><li>客户端的通信通过服务器的转发</li><li>过程：<ol><li>服务器启动（确定端口）</li><li>客户端连到服务器（根据服务器IP和端口）</li><li>客户端发信息给服务器</li><li>服务器发信息给另一个客户端</li></ol></li></ul><h1 id="javanet包"><a class="markdownIt-Anchor" href="#javanet包"></a> java.net包</h1><ul><li>ServerSocket：开启服务器，指定端口，接受客户端连接。<ul><li>accept()：阻塞函数(死等函数)</li></ul></li><li>Socket：套接字。负责实际的通信连接，以及发送接收信息。<ul><li>getOutputStream，getIntputStream，老师推荐使用：</li></ul></li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PrintStream ps = <span class="keyword">new</span> PrintStream(socket.getOutputStream())</span><br><span class="line">BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> IntputStreamReader(socket.getIntputStream()))</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Java </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Java多线程开发</title>
-      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BC%80%E5%8F%91/"/>
-      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BC%80%E5%8F%91/</url>
-      
-        <content type="html"><![CDATA[<h1 id="认识多线程"><a class="markdownIt-Anchor" href="#认识多线程"></a> 认识多线程</h1><ul><li>进程(process)：操作系统层面，计算机能够“同时”运行的各个应用程序；管理上，每个进程占用独自的内存资源分时间片</li><li>线程(Thread)：应用程序层面，程序能够“同时”运行的各个任务；管理上，各个线程共用进程的内存资源<ul><li>例：一个程序，可以下载文件，同时播放音乐。两个任务分别运行。</li></ul></li></ul><h1 id="开发线程"><a class="markdownIt-Anchor" href="#开发线程"></a> 开发线程</h1><ul><li>关键是<strong>将需要用线程管理的代码（不依赖主程序，可以同时运行的代码），放在线程中</strong>。</li></ul><h2 id="方法1继承-thread-类开发多线程"><a class="markdownIt-Anchor" href="#方法1继承-thread-类开发多线程"></a> 方法1：继承 <em><strong>Thread</strong></em> 类开发多线程</h2><ol><li><p>继承 <strong>java.lang.Thread</strong> 类开发多线程</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span></span><br></pre></td></tr></table></figure></li><li><p>在这个类重写 <strong>Thread</strong> 类中的<strong>run函数</strong>：</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure></li><li><p>实例化线程对象，调用其 <strong>start()</strong> 函数启动该线程</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyThread thread = <span class="keyword">new</span> MyThread();</span><br><span class="line">thread.start();</span><br></pre></td></tr></table></figure></li></ol><h2 id="方法2实现-runnable-接口开发多线程"><a class="markdownIt-Anchor" href="#方法2实现-runnable-接口开发多线程"></a> 方法2：实现 <em><strong>Runnable</strong></em> 接口开发多线程</h2><ol><li><p>编写一个类，实现 <strong>java.lang.Runnable</strong> 接口</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span></span><br></pre></td></tr></table></figure></li><li><p>在这个类中重写 <strong>java.lang.Runnable</strong> 接口中的函数：</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure></li><li><p>实例化 <strong>java.lang.Thread</strong> 对象，实例化上面编写的 <strong>Runnable</strong> 实现类，将后者传入 <strong>Thread</strong> 对象的构造函数，调用 <strong>Thread</strong> 对象的 <strong>start()</strong> 函数来启动线程</p> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Runnable threadJob = <span class="keyword">new</span> MyRunnable();</span><br><span class="line">Thread thread = <span class="keyword">new</span> Thread(threadJob);</span><br><span class="line">thread.start();</span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line"><span class="comment">// new Thread(new MyRunnable()).start();</span></span><br></pre></td></tr></table></figure></li></ol><h2 id="两种方法比较"><a class="markdownIt-Anchor" href="#两种方法比较"></a> 两种方法比较</h2><ol><li>第一种每个对象都是一个线程，而第二种每个对象不是一个线程，必须将其传入Thread对象才能运行</li><li>第一种每个线程都有自己的成员变量，而第二种共享成员变量</li><li>Java不支持多重继承，只能继承一个类，但是可以实现多个接口，第一种方法虽然较简单，但是扩展性没有第二种强</li></ol><h1 id="线程控制"><a class="markdownIt-Anchor" href="#线程控制"></a> 线程控制</h1><ul><li><strong>启动(start)、暂停(suspend)、继续(resume)、停止(stop)，销毁(destroy)</strong></li><li>Thread的suspend(暂停)，resume(继续)虽然可以使用，但是由于有死锁危险，被废弃。因为线程暂停时，并不释放线程所拥有的资源。<ul><li>解决方法：建议让<strong>线程暂停，等价于让线程结束运行</strong>。因为结束运行会释放资源；线程结束运行的标志：run函数运行完毕。线程继续相当于新开一个线程，在原来线程基础上运行。所以线程暂停时，要注意保护现场。</li></ul></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Java </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Java基本语法</title>
-      <link href="/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/"/>
-      <url>/2019/12/27/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
-      
-        <content type="html"><![CDATA[<ul><li>立即数系统默认为int/double<ul><li>如要赋值一个long，必须要在最后加上L符号表示这是个long类型</li></ul></li><li>数组初始化<blockquote><p>int[] a = new int[]{1,2,3};</p></blockquote></li><li>类型转换<ul><li>低精度可以直接赋给高精度<blockquote><p>byte &lt; short &lt; char &lt; int &lt; long &lt; float &lt; double<br>java中的char是十六位，双字节，因此比short大</p></blockquote></li><li>高精度不能直接赋值给低精度：需要强制类型转换</li><li>不同类型之间的运算结果为<strong>精度最高的类型</strong></li></ul></li><li>基本数据类型和字符串转换<ul><li>String.valueOf(各种基本类型)，返回String对象</li><li>XXX.parseXXX(字符串)，返回的是primitive类型，而不是对象</li></ul></li><li>文档注释：&quot;/**&quot; 开头，&quot;*/&quot;结束</li><li><strong>字符串相加(实为连接)：&quot;+&quot;是Java中唯一重载过的一个字符</strong></li><li>&amp;&amp; 和 || 都是短路运算符，即如果第一个可以判断出表达式的TF，就不再运算后面的内容</li><li>运算符的优先级：<ul><li>点号，括号，分号，逗号</li><li>算术运算符</li><li>移位运算符</li><li>关系运算符</li><li>逻辑运算符</li><li>赋值运算符</li></ul></li><li>Java流程<ul><li>选择：if-else switch-case(会让你判断结果)</li><li>循环：for while do-while break continue</li><li>注意：判断中只能为boolean类型，不能为数值</li></ul></li></ul>]]></content>
       
       
       <categories>
@@ -935,6 +935,31 @@
     
     
     <entry>
+      <title>运算符重载</title>
+      <link href="/2019/12/13/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/"/>
+      <url>/2019/12/13/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/</url>
+      
+        <content type="html"><![CDATA[<p><strong>函数类型 operator 运算符名称(形参表)</strong><br>{ <strong>对运算符的重载处理</strong> }</p><ul><li>函数名是由 <strong>operator</strong> 和 <strong>运算符</strong> 组成的</li></ul><hr><ul><li>运算符重载的规则<ol><li>不允许用户自定义新的运算符</li><li>不允许重载的5个运算符：<table><thead><tr><th>符号</th><th>类型</th></tr></thead><tbody><tr><td>.</td><td>成员访问运算符</td></tr><tr><td>*</td><td>成员指针访问运算符</td></tr><tr><td>::</td><td>域运算符</td></tr><tr><td>sizeof</td><td>长度运算符</td></tr><tr><td>?:</td><td>条件运算符</td></tr></tbody></table></li><li>不能改变 <strong>操作数个数</strong></li><li>不能改变 <strong>优先级</strong> 和 <strong>结合性</strong></li><li>不能有默认参数</li><li>参数 <strong>至少有一个</strong> 是类对象（或者对象的引用）</li><li>= 和 &amp; 不必重载</li></ol></li></ul><hr><ul><li>运算符重载的两个方式：<ol><li>作为成员函数<ul><li>可以少写一个函数参数</li><li>一般为单目操作符</li><li><strong>=，[]，()，-&gt;只能作为成员函数重载</strong></li></ul></li><li>友元函数<ul><li>一般为 <strong>双目操作符</strong> 的重载（为了普适交换律），以及 流插入 <strong>“&lt;&lt;”</strong> 和 流提取 <strong>“&gt;&gt;”</strong> 的重载</li><li>双目运算符的参数列表必须有 <strong>两个参数</strong></li></ul></li><li>不能是普通函数</li></ol></li></ul><hr><ul><li>单目运算符：++，–的重载<ul><li>前增：Object operator ++ ();</li><li>后增：Object operator ++ ( <strong>int</strong> );</li><li>为了让编译器区别前置和后置，在后置的声明中加入一个 <strong>虚参数</strong> ，以示区别</li><li>而且后增返回的应该为变化前的对象，此时应该调用复制构造函数：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Object <span class="title">temp</span><span class="params">(*<span class="keyword">this</span>)</span></span>;</span><br><span class="line"><span class="comment">//进行++</span></span><br><span class="line"><span class="keyword">return</span> temp;</span><br></pre></td></tr></table></figure></li></ul></li></ul><hr><ul><li>流插入 <strong>“&lt;&lt;”</strong> 和 流提取 <strong>“&gt;&gt;”</strong> 的重载<ul><li><p>必须作为 <strong>友元函数</strong> ！</p></li><li><p>传入两个参数：一个流参数，一个对象，均为 <strong>引用</strong></p><ul><li>如果要对 <strong>临时对象</strong> (如返回对象)，进行 “&lt;&lt;”，此时要用const修饰引用的对象(ostream &amp;os,<strong>const</strong> Object &amp;obj)，因为临时对象为 <strong>右值且默认const属性</strong>, C++ 规定右值不能绑定到非 const 限定的左值引用。</li></ul></li><li><p>返回的类型要为 <strong>流</strong>，以便于连续向输出/输出流 <strong>插入信息</strong></p></li><li><p>&quot;&lt;&lt;&quot;的重载格式如下：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   ostream&amp; <span class="keyword">operator</span>&lt;&lt; (ostream &amp;os,Object &amp;obj)&#123;</span><br><span class="line">   os&lt;&lt;obj.members;</span><br><span class="line">   <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>&quot;&gt;&gt;&quot;的重载格式如下：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">istream&amp; <span class="keyword">operator</span>&gt;&gt; (istream &amp;is,Object &amp;obj)&#123;</span><br><span class="line">is&gt;&gt;obj.members;</span><br><span class="line"><span class="keyword">return</span> is;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ul></li></ul><hr><ul><li>类型转换函数<blockquote><p>operator 类型名()<br>{实现转换的语句}<br>//operator double(); 将对象转换为double类型。至于怎么转换，自己定义</p></blockquote><ul><li><strong>不能指定类型，没有参数</strong></li><li>必须为成员函数，因为转换的主体是本类的对象</li></ul></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> C++学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> C++ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>8086寻址方式</title>
       <link href="/2019/12/13/%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/"/>
       <url>/2019/12/13/%E5%AD%A6%E4%B9%A0/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/</url>
@@ -985,11 +1010,11 @@
     
     
     <entry>
-      <title>运算符重载</title>
-      <link href="/2019/12/13/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/"/>
-      <url>/2019/12/13/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/</url>
+      <title>继承与派生</title>
+      <link href="/2019/12/12/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%B4%BE%E7%94%9F/"/>
+      <url>/2019/12/12/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%B4%BE%E7%94%9F/</url>
       
-        <content type="html"><![CDATA[<p><strong>函数类型 operator 运算符名称(形参表)</strong><br>{ <strong>对运算符的重载处理</strong> }</p><ul><li>函数名是由 <strong>operator</strong> 和 <strong>运算符</strong> 组成的</li></ul><hr><ul><li>运算符重载的规则<ol><li>不允许用户自定义新的运算符</li><li>不允许重载的5个运算符：<table><thead><tr><th>符号</th><th>类型</th></tr></thead><tbody><tr><td>.</td><td>成员访问运算符</td></tr><tr><td>*</td><td>成员指针访问运算符</td></tr><tr><td>::</td><td>域运算符</td></tr><tr><td>sizeof</td><td>长度运算符</td></tr><tr><td>?:</td><td>条件运算符</td></tr></tbody></table></li><li>不能改变 <strong>操作数个数</strong></li><li>不能改变 <strong>优先级</strong> 和 <strong>结合性</strong></li><li>不能有默认参数</li><li>参数 <strong>至少有一个</strong> 是类对象（或者对象的引用）</li><li>= 和 &amp; 不必重载</li></ol></li></ul><hr><ul><li>运算符重载的两个方式：<ol><li>作为成员函数<ul><li>可以少写一个函数参数</li><li>一般为单目操作符</li><li><strong>=，[]，()，-&gt;只能作为成员函数重载</strong></li></ul></li><li>友元函数<ul><li>一般为 <strong>双目操作符</strong> 的重载（为了普适交换律），以及 流插入 <strong>“&lt;&lt;”</strong> 和 流提取 <strong>“&gt;&gt;”</strong> 的重载</li><li>双目运算符的参数列表必须有 <strong>两个参数</strong></li></ul></li><li>不能是普通函数</li></ol></li></ul><hr><ul><li>单目运算符：++，–的重载<ul><li>前增：Object operator ++ ();</li><li>后增：Object operator ++ ( <strong>int</strong> );</li><li>为了让编译器区别前置和后置，在后置的声明中加入一个 <strong>虚参数</strong> ，以示区别</li><li>而且后增返回的应该为变化前的对象，此时应该调用复制构造函数：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Object <span class="title">temp</span><span class="params">(*<span class="keyword">this</span>)</span></span>;</span><br><span class="line"><span class="comment">//进行++</span></span><br><span class="line"><span class="keyword">return</span> temp;</span><br></pre></td></tr></table></figure></li></ul></li></ul><hr><ul><li>流插入 <strong>“&lt;&lt;”</strong> 和 流提取 <strong>“&gt;&gt;”</strong> 的重载<ul><li><p>必须作为 <strong>友元函数</strong> ！</p></li><li><p>传入两个参数：一个流参数，一个对象，均为 <strong>引用</strong></p><ul><li>如果要对 <strong>临时对象</strong> (如返回对象)，进行 “&lt;&lt;”，此时要用const修饰引用的对象(ostream &amp;os,<strong>const</strong> Object &amp;obj)，因为临时对象为 <strong>右值且默认const属性</strong>, C++ 规定右值不能绑定到非 const 限定的左值引用。</li></ul></li><li><p>返回的类型要为 <strong>流</strong>，以便于连续向输出/输出流 <strong>插入信息</strong></p></li><li><p>&quot;&lt;&lt;&quot;的重载格式如下：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   ostream&amp; <span class="keyword">operator</span>&lt;&lt; (ostream &amp;os,Object &amp;obj)&#123;</span><br><span class="line">   os&lt;&lt;obj.members;</span><br><span class="line">   <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><p>&quot;&gt;&gt;&quot;的重载格式如下：</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">istream&amp; <span class="keyword">operator</span>&gt;&gt; (istream &amp;is,Object &amp;obj)&#123;</span><br><span class="line">is&gt;&gt;obj.members;</span><br><span class="line"><span class="keyword">return</span> is;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ul></li></ul><hr><ul><li>类型转换函数<blockquote><p>operator 类型名()<br>{实现转换的语句}<br>//operator double(); 将对象转换为double类型。至于怎么转换，自己定义</p></blockquote><ul><li><strong>不能指定类型，没有参数</strong></li><li>必须为成员函数，因为转换的主体是本类的对象</li></ul></li></ul>]]></content>
+        <content type="html"><![CDATA[<ul><li>继承的三种方式：<ol><li>public</li><li>private (默认)</li><li>protected</li></ol></li></ul><hr><ul><li>三种继承方式的不同<table><thead><tr><th>继承方式</th><th>public</th><th>protected</th><th>private</th></tr></thead><tbody><tr><td>public</td><td>public</td><td>protected</td><td>不可访问</td></tr><tr><td>private</td><td>private</td><td>private</td><td>不可访问</td></tr><tr><td>protected</td><td>protected</td><td>protected</td><td>不可访问</td></tr></tbody></table></li><li>tips：<ul><li>xx继承的话，访问权限必须 &lt;= xx</li><li>基类的private均不可访问</li><li>protected 成员不能在类外被访问</li></ul></li></ul><hr><ul><li>类里定义的默认成员变量和函数均为private</li><li>类默认为public</li><li>全局成员默认public</li></ul><hr><ul><li>派生类的构成<ol><li>从基类接受成员</li><li>调整从基类接受的成员。</li></ol><ul><li>变化访问权限</li><li>重写，同名即覆盖</li></ul><ol start="3"><li>新增成员</li></ol></li></ul><hr><ul><li>执行派生类构造函数的顺序：<ol><li>调用 <strong>基类</strong> 构造函数，只与 <strong>声明的顺序</strong> 有关，和派生类中的调用顺序无关</li><li>调用 <strong>子对象</strong> (对象中的对象) 构造函数</li></ol><ul><li>调用方法：<strong>子对象名</strong> (参数表)，没有显式调用的话则为默认构造函数</li></ul><ol start="3"><li>再执行 <strong>派生类</strong> 的构造函数本身</li></ol></li></ul><hr><ul><li>虚基类(virtual)的作用：在继承间接共同基类时，只保存<strong>一份成员</strong><ul><li>C++编译系统只执行 <strong>最后的派生类对虚基类的构造函数的调用</strong> ，而忽略虚基类其他的派生类。所以我们可以直接显式的调用虚基类的构造函数。</li></ul></li><li>虚基类和抽象类的区别<ul><li>虚基类式相对它的派生类而言，它可以是个普通的类，被虚继承才叫做虚基类</li><li>而抽象类是类中有一个以上的纯虚函数，只能用于继承，不能生成对象，但是能定义对象指针，然后指向派生类对象，实现多态性</li></ul></li></ul><hr><ul><li>基类和派生类的转换<ul><li>只有public继承的类型才是真正的子类型</li><li>只能用 <strong>派生类对象对基类对象</strong> 赋值，反之不允许<ul><li>因为基类有的派生类都有，而派生类有的基类不一定有</li></ul></li><li>同一基类的不同派生类对象之间不能赋值</li></ul></li></ul>]]></content>
       
       
       <categories>
@@ -1010,11 +1035,11 @@
     
     
     <entry>
-      <title>继承与派生</title>
-      <link href="/2019/12/12/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%B4%BE%E7%94%9F/"/>
-      <url>/2019/12/12/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%B4%BE%E7%94%9F/</url>
+      <title>多态性与虚函数</title>
+      <link href="/2019/12/11/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E6%80%81%E6%80%A7%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/"/>
+      <url>/2019/12/11/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E6%80%81%E6%80%A7%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/</url>
       
-        <content type="html"><![CDATA[<ul><li>继承的三种方式：<ol><li>public</li><li>private (默认)</li><li>protected</li></ol></li></ul><hr><ul><li>三种继承方式的不同<table><thead><tr><th>继承方式</th><th>public</th><th>protected</th><th>private</th></tr></thead><tbody><tr><td>public</td><td>public</td><td>protected</td><td>不可访问</td></tr><tr><td>private</td><td>private</td><td>private</td><td>不可访问</td></tr><tr><td>protected</td><td>protected</td><td>protected</td><td>不可访问</td></tr></tbody></table></li><li>tips：<ul><li>xx继承的话，访问权限必须 &lt;= xx</li><li>基类的private均不可访问</li><li>protected 成员不能在类外被访问</li></ul></li></ul><hr><ul><li>类里定义的默认成员变量和函数均为private</li><li>类默认为public</li><li>全局成员默认public</li></ul><hr><ul><li>派生类的构成<ol><li>从基类接受成员</li><li>调整从基类接受的成员。</li></ol><ul><li>变化访问权限</li><li>重写，同名即覆盖</li></ul><ol start="3"><li>新增成员</li></ol></li></ul><hr><ul><li>执行派生类构造函数的顺序：<ol><li>调用 <strong>基类</strong> 构造函数，只与 <strong>声明的顺序</strong> 有关，和派生类中的调用顺序无关</li><li>调用 <strong>子对象</strong> (对象中的对象) 构造函数</li></ol><ul><li>调用方法：<strong>子对象名</strong> (参数表)，没有显式调用的话则为默认构造函数</li></ul><ol start="3"><li>再执行 <strong>派生类</strong> 的构造函数本身</li></ol></li></ul><hr><ul><li>虚基类(virtual)的作用：在继承间接共同基类时，只保存<strong>一份成员</strong><ul><li>C++编译系统只执行 <strong>最后的派生类对虚基类的构造函数的调用</strong> ，而忽略虚基类其他的派生类。所以我们可以直接显式的调用虚基类的构造函数。</li></ul></li><li>虚基类和抽象类的区别<ul><li>虚基类式相对它的派生类而言，它可以是个普通的类，被虚继承才叫做虚基类</li><li>而抽象类是类中有一个以上的纯虚函数，只能用于继承，不能生成对象，但是能定义对象指针，然后指向派生类对象，实现多态性</li></ul></li></ul><hr><ul><li>基类和派生类的转换<ul><li>只有public继承的类型才是真正的子类型</li><li>只能用 <strong>派生类对象对基类对象</strong> 赋值，反之不允许<ul><li>因为基类有的派生类都有，而派生类有的基类不一定有</li></ul></li><li>同一基类的不同派生类对象之间不能赋值</li></ul></li></ul>]]></content>
+        <content type="html"><![CDATA[<ul><li>静态多态性：函数重载</li><li>动态多态性：运行阶段调用被派生类重写的函数，通过虚函数实现</li></ul><hr><ul><li>派生类对象可以代替基类对象向基类对象的引用初始化或赋值<ul><li>派生类的对象可以初始化基类对象</li></ul></li></ul><hr><ul><li>虚函数：基类中声明函数是 <strong>虚拟的</strong> ，并不是实际存在的函数，然后在 <strong>派生类中才正式定义</strong> 此函数<ul><li>但是，在基类中也可以写出定义，以供基类对象调用，即虚函数可以有定义内容</li><li>在基类中没有定义的函数可以作为纯虚函数声明</li></ul></li></ul><hr><ul><li>纯虚函数：基类对象不会使用该函数，返回值也没有意义，可以只给出函数的原型，并在末尾加上 <em>“=0”</em><ul><li>virtual 函数类型 函数名 (参数表列) = 0；</li></ul></li></ul><hr><ul><li>抽象类<ul><li>定义该类的唯一目的是：<strong>用它作为基类去建立派生类</strong></li><li>凡是包含 <strong>纯虚函数</strong> 的类都是抽象类</li><li>不能定义对象，但是能定义对象指针</li></ul></li></ul>]]></content>
       
       
       <categories>
@@ -1077,31 +1102,6 @@
         <tags>
             
             <tag> 汇编 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>多态性与虚函数</title>
-      <link href="/2019/12/11/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E6%80%81%E6%80%A7%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/"/>
-      <url>/2019/12/11/%E5%AD%A6%E4%B9%A0/C++%E5%AD%A6%E4%B9%A0/%E5%A4%9A%E6%80%81%E6%80%A7%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/</url>
-      
-        <content type="html"><![CDATA[<ul><li>静态多态性：函数重载</li><li>动态多态性：运行阶段调用被派生类重写的函数，通过虚函数实现</li></ul><hr><ul><li>派生类对象可以代替基类对象向基类对象的引用初始化或赋值<ul><li>派生类的对象可以初始化基类对象</li></ul></li></ul><hr><ul><li>虚函数：基类中声明函数是 <strong>虚拟的</strong> ，并不是实际存在的函数，然后在 <strong>派生类中才正式定义</strong> 此函数<ul><li>但是，在基类中也可以写出定义，以供基类对象调用，即虚函数可以有定义内容</li><li>在基类中没有定义的函数可以作为纯虚函数声明</li></ul></li></ul><hr><ul><li>纯虚函数：基类对象不会使用该函数，返回值也没有意义，可以只给出函数的原型，并在末尾加上 <em>“=0”</em><ul><li>virtual 函数类型 函数名 (参数表列) = 0；</li></ul></li></ul><hr><ul><li>抽象类<ul><li>定义该类的唯一目的是：<strong>用它作为基类去建立派生类</strong></li><li>凡是包含 <strong>纯虚函数</strong> 的类都是抽象类</li><li>不能定义对象，但是能定义对象指针</li></ul></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> C++学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> C++ </tag>
             
         </tags>
       
@@ -1386,6 +1386,33 @@
     
     
     <entry>
+      <title>排序算法</title>
+      <link href="/2019/10/31/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
+      <url>/2019/10/31/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<p>生活中的排序无处不在，因此在算法中也无处不在，排序看似简单，但是有着各种各样的算法和思想。</p><a id="more"></a><h1 id="分类"><a class="markdownIt-Anchor" href="#分类"></a> 分类</h1><h2 id="根据时间复杂度的不同主流的排序算法可以分为3大类"><a class="markdownIt-Anchor" href="#根据时间复杂度的不同主流的排序算法可以分为3大类"></a> 根据时间复杂度的不同，主流的排序算法可以分为3大类。</h2><ol><li>时间复杂度为 <em>O(n^2)</em></li></ol><ul><li>冒泡算法</li><li>选择排序</li><li>插入排序</li><li>希尔排序(希尔排序比较特殊，它的性能略优于O(n^2)，但又比不上O(nlogn))</li></ul><ol start="2"><li>时间复杂度为 <em>O(nlogn)</em></li></ol><ul><li>快速排序</li><li>归并排序</li><li>堆排序</li></ul><ol start="3"><li>时间复杂度为线性</li></ol><ul><li>计数排序</li><li>桶排序</li><li>基数排序</li></ul><h2 id="此外排序算法还划分为-稳定排序-和-不稳定排序"><a class="markdownIt-Anchor" href="#此外排序算法还划分为-稳定排序-和-不稳定排序"></a> 此外，排序算法还划分为 <strong>稳定排序</strong> 和 <strong>不稳定排序</strong></h2><p>如何划分稳定和不稳定：如果值相同的元素在排序后仍然保持排序前的顺序，排序算法就是稳定的</p><h1 id="总表"><a class="markdownIt-Anchor" href="#总表"></a> 总表</h1><p><img alt data-src="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/20191103155227.png" class="lazyload"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法之旅 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 排序 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>冒泡算法</title>
       <link href="/2019/10/31/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/"/>
       <url>/2019/10/31/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/</url>
@@ -1418,33 +1445,6 @@
       <url>/2019/10/31/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
       
         <content type="html"><![CDATA[<p>同冒泡排序，快速排序也是交换排序</p><a id="more"></a><h1 id="思想"><a class="markdownIt-Anchor" href="#思想"></a> 思想</h1><p>每一轮挑选一个基准元素，并让其他比它大的元素移动到数列的一边，比它小的移动到另一边，从而把数列拆成两个部分，一个部分的数全部比基准元素打，另一个部分全部比它小。</p><ul><li>这种思想叫做 <strong>分治法</strong></li><li>原数列在每一轮都被拆成两部分，两部分中的每一部分又被拆成两部分，一直递归下去，直至不可再分，因此要遍历 <strong>logn</strong> 轮，而且每一轮的交换和比较要遍历数组，因此时间复杂度为 <strong>O(nlogn)</strong></li></ul><h1 id="基准元素的选择"><a class="markdownIt-Anchor" href="#基准元素的选择"></a> 基准元素的选择</h1><p>最简单的方式是选第一个元素，但是在数列基本有序，或者逆序的情况下，数列没有理想的被分为均匀的两半，<em>每一轮只确定基准元素的位置</em>，时间复杂度退化为O(n^2)</p><ul><li>解决方法：<strong>随机选择一个元素作为基准元素</strong>，并让基准元素和数列首位元素交换位置</li></ul><h1 id="元素的交换"><a class="markdownIt-Anchor" href="#元素的交换"></a> 元素的交换</h1><p>选定了基准元素以后，我们要做的就是把其他元素中小于基准元素都交换到基准元素的一边，大于它的交换到另一边。</p><h2 id="实现方法"><a class="markdownIt-Anchor" href="#实现方法"></a> 实现方法</h2><h3 id="双边循环法"><a class="markdownIt-Anchor" href="#双边循环法"></a> 双边循环法</h3><p>也就是数据结构中学的方法，为双指针法。</p><ul><li>首先选定基准元素pivot，并设置两个指针left，right，分别指向数组的最左边和最右边</li><li>进行循环，从right指针开始，让指针所指向的元素和基准元素做比较。<ol><li>如果大于或等于pivot，则right指针右移</li><li>如果小于pivot，则right指针停止移动，right和left指向的值互换，切换到left指针</li><li>让left指针指向的元素和基准元素作比较，如果小于等于pivot，则左移，反之停止移动，right和left指向的值互换，切换到right指针</li></ol></li><li>一直循环下去，直到 <strong>right == left</strong></li><li>最后把pivot的与两指针汇合处的元素与pivot互换，即完成第一次分治</li></ul><h4 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> endIndex)</span></span>&#123;</span><br><span class="line">    <span class="comment">//递归结束条件，startIndex大于等于endIndex时</span></span><br><span class="line">    <span class="keyword">if</span>(startIndex &gt;= endIndex) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">//得到基准元素位置</span></span><br><span class="line">    <span class="keyword">int</span> pivotIndex = partition(arr, startIndex, endIndex);</span><br><span class="line">    <span class="comment">//根据基准元素，分成两部分进行递归快速排序</span></span><br><span class="line">    quickSort(arr, startIndex, pivotIndex-<span class="number">1</span>);</span><br><span class="line">    quickSort(arr, pivotIndex+<span class="number">1</span>, endIndex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> endIndex)</span></span>&#123;</span><br><span class="line">    <span class="comment">//取第一个位置的元素作为基准元素</span></span><br><span class="line">    <span class="keyword">int</span> pivot = arr[startIndex];</span><br><span class="line">    <span class="keyword">int</span> left = startIndex;</span><br><span class="line">    <span class="keyword">int</span> right = endIndex;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(left != right)&#123;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right &amp;&amp; arr[right] &gt; pivot)</span><br><span class="line">            right--;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right &amp;&amp; arr[left] &lt;= pivot)</span><br><span class="line">            left++;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//交换left和right指针所指向的元素</span></span><br><span class="line">        <span class="keyword">if</span>(left &lt; right)&#123;</span><br><span class="line">            <span class="keyword">int</span> p = arr[left];</span><br><span class="line">            arr[left] = arr[right];</span><br><span class="line">            arr[right] = p;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//pivot和指针重合点交换</span></span><br><span class="line">    arr[startIndex] = arr[left];</span><br><span class="line">    arr[left] = pivot;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="单边循环法"><a class="markdownIt-Anchor" href="#单边循环法"></a> 单边循环法</h3><p>双边循环从数组的两边交替遍历元素，虽然更加直观，但是代码量较多。单边循环法只从数组的一边对元素进行遍历和交换。</p><ul><li>选定基准元素pivot，设置一个mark指针指向数列起始位置，这个mark指针代表 <strong>小于基准元素的区域边界</strong></li><li>接下来，从基准元素的下一个位置开始遍历数组<ol><li>如果遍历到的元素大于基准元素，就继续往后遍历</li><li>如果小于基准元素，需要做两件事：<br>第一，把mark指针右移一位，因为小于pivot的区域边界增加了1；<br>第二，让最新遍历到的元素和mark指针所在位置的元素互换，因为最新遍历的元素归属与小于pivot的区域</li></ol></li><li>按照这个思路，继续遍历，直至末位，最后把pivot元素交换到mark指针所在的位置，第一次分治结束</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> endIndex)</span></span>&#123;</span><br><span class="line">    <span class="comment">//递归结束条件，startIndex大于等于endIndex时</span></span><br><span class="line">    <span class="keyword">if</span>(startIndex &gt;= endIndex) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">//得到基准元素位置</span></span><br><span class="line">    <span class="keyword">int</span> pivotIndex = partitionV2(arr, startIndex, endIndex);</span><br><span class="line">    <span class="comment">//根据基准元素，分成两部分进行递归快速排序</span></span><br><span class="line">    quickSort(arr, startIndex, pivotIndex-<span class="number">1</span>);</span><br><span class="line">    quickSort(arr, pivotIndex+<span class="number">1</span>, endIndex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">partitionV2</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> endIndex)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pivot = arr[startIndex];</span><br><span class="line">    <span class="keyword">int</span> mark = startIndex;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = startIndex+<span class="number">1</span>; i &lt;= endIndex; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(arr[i] &lt; pivot)&#123;</span><br><span class="line">            mark++;</span><br><span class="line">            <span class="keyword">int</span> p = arr[mark];</span><br><span class="line">            arr[mark] = arr[i];</span><br><span class="line">            arr[i] = p;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    arr[startIndex] = arr[mark];</span><br><span class="line">    arr[mark] = pivot;</span><br><span class="line">    <span class="keyword">return</span> mark;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 算法之旅 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Java </tag>
-            
-            <tag> 排序 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>排序算法</title>
-      <link href="/2019/10/31/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
-      <url>/2019/10/31/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
-      
-        <content type="html"><![CDATA[<p>生活中的排序无处不在，因此在算法中也无处不在，排序看似简单，但是有着各种各样的算法和思想。</p><a id="more"></a><h1 id="分类"><a class="markdownIt-Anchor" href="#分类"></a> 分类</h1><h2 id="根据时间复杂度的不同主流的排序算法可以分为3大类"><a class="markdownIt-Anchor" href="#根据时间复杂度的不同主流的排序算法可以分为3大类"></a> 根据时间复杂度的不同，主流的排序算法可以分为3大类。</h2><ol><li>时间复杂度为 <em>O(n^2)</em></li></ol><ul><li>冒泡算法</li><li>选择排序</li><li>插入排序</li><li>希尔排序(希尔排序比较特殊，它的性能略优于O(n^2)，但又比不上O(nlogn))</li></ul><ol start="2"><li>时间复杂度为 <em>O(nlogn)</em></li></ol><ul><li>快速排序</li><li>归并排序</li><li>堆排序</li></ul><ol start="3"><li>时间复杂度为线性</li></ol><ul><li>计数排序</li><li>桶排序</li><li>基数排序</li></ul><h2 id="此外排序算法还划分为-稳定排序-和-不稳定排序"><a class="markdownIt-Anchor" href="#此外排序算法还划分为-稳定排序-和-不稳定排序"></a> 此外，排序算法还划分为 <strong>稳定排序</strong> 和 <strong>不稳定排序</strong></h2><p>如何划分稳定和不稳定：如果值相同的元素在排序后仍然保持排序前的顺序，排序算法就是稳定的</p><h1 id="总表"><a class="markdownIt-Anchor" href="#总表"></a> 总表</h1><p><img alt data-src="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/20191103155227.png" class="lazyload"></p>]]></content>
       
       
       <categories>
@@ -1552,6 +1552,33 @@
     
     
     <entry>
+      <title>判断链表有环</title>
+      <link href="/2019/10/27/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/LeetCode/%E5%88%A4%E6%96%AD%E9%93%BE%E8%A1%A8%E6%9C%89%E7%8E%AF/"/>
+      <url>/2019/10/27/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/LeetCode/%E5%88%A4%E6%96%AD%E9%93%BE%E8%A1%A8%E6%9C%89%E7%8E%AF/</url>
+      
+        <content type="html"><![CDATA[<p>有一个单向链表，如何判断链表是否为有环链表？</p><a id="more"></a><h1 id="hashset法"><a class="markdownIt-Anchor" href="#hashset法"></a> HashSet法</h1><h2 id="思路"><a class="markdownIt-Anchor" href="#思路"></a> 思路</h2><ul><li>创建一个以节点ID为Key的HashSet集合</li><li>遍历链表并加入HashSet，判断是否重复，重复则有环</li></ul><h2 id="复杂度"><a class="markdownIt-Anchor" href="#复杂度"></a> 复杂度</h2><ul><li>时间复杂度O(n)</li><li>空间复杂度O(n)</li></ul><h1 id="双指针追及法"><a class="markdownIt-Anchor" href="#双指针追及法"></a> 双指针追及法</h1><h2 id="思路-2"><a class="markdownIt-Anchor" href="#思路-2"></a> 思路</h2><ul><li>声明两个指针p1，p2，都指向头节点</li><li>p1为慢指针，速度一个节点，p2为快指针，速度两个节点，速度差一个节点</li><li>让两个指针开始跑，两个指针跑完一次，判断两个指针指向的节点是否相同，相同则有环，不同则继续下一次循环<br>这个思路类似于数学上的 <em>追及问题</em>，如果跑道是环形的，快指针会追上慢指针</li></ul><h2 id="复杂度-2"><a class="markdownIt-Anchor" href="#复杂度-2"></a> 复杂度</h2><ul><li>时间复杂度O(n)</li><li>空间复杂度O(1)</li></ul><h2 id="源码"><a class="markdownIt-Anchor" href="#源码"></a> 源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isCycle</span><span class="params">(Node head)</span></span>&#123;</span><br><span class="line">    Node p1 = head, p2 = head;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(p2 != <span class="keyword">null</span> &amp;&amp; p2.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next.next;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//ringMeetNode可以在这里获得</span></span><br><span class="line">        <span class="keyword">if</span>(p1 == p2)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">public class Node&#123;</span></span><br><span class="line"><span class="comment">    int data;</span></span><br><span class="line"><span class="comment">    Node next;</span></span><br><span class="line"><span class="comment">    Node(int data)&#123;</span></span><br><span class="line"><span class="comment">        this.data = data;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure><h1 id="问题扩展"><a class="markdownIt-Anchor" href="#问题扩展"></a> 问题扩展</h1><h2 id="1如何求出环的长度"><a class="markdownIt-Anchor" href="#1如何求出环的长度"></a> 1.如何求出环的长度</h2><p>当两个指针首次相遇，让两个指针接着前进，并统计前进的循环次数，直到两个指针再次相遇。此时统计前进的循环次数就是环长。</p><h3 id="原理"><a class="markdownIt-Anchor" href="#原理"></a> 原理</h3><p>p1与p2速度差为一个节点，当快指针再次追上慢指针时，快指针多走了慢指针一圈，因此：<br><strong>环长 = 快指针走的步数 - 慢指针走的步数 = 速度差 * 前进次数 = 前进次数</strong></p><h3 id="代码实现"><a class="markdownIt-Anchor" href="#代码实现"></a> 代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getRingLength</span><span class="params">(Node ringMeetNode)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ringLength = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//ringMeetNode可以在isCycle()中获得</span></span><br><span class="line">    Node p1 = ringMeetNode, p2 = ringMeetNode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next.next;</span><br><span class="line">        ringLength++;</span><br><span class="line">        <span class="keyword">if</span>(p1 == p2)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ringLength;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="2如何求入环节点"><a class="markdownIt-Anchor" href="#2如何求入环节点"></a> 2.如何求入环节点</h2><h3 id="原理-2"><a class="markdownIt-Anchor" href="#原理-2"></a> 原理</h3><p>假设从链表头节点到入环的距离时D，从入环点到首次相遇点的距离时S1，从首次相遇点回到入环点的距离时S2</p><ol><li>两次指针首次相遇时，各自所走的距离：</li></ol><ul><li>p1：D + S1</li><li>p2：D + S1 + S2 + S1 = D + 2S1 + S2</li></ul><ol start="2"><li>由于p2的速度是p1的两倍，因此：2(D + S1) = D + 2S1 + S2</li><li>得到 <strong>D = S2</strong>，即：从头节点到入环点的距离 = 从首次相遇点回到入环点的距离</li><li>这样一来，只要把其中一个指针放回头节点，另一个指针保持在远处，然后两个指针的 <strong>速度都是一个节点</strong>，那么：它们 <strong>相遇节点就是入环节点</strong></li></ol><h3 id="代码实现-2"><a class="markdownIt-Anchor" href="#代码实现-2"></a> 代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">getRingStart</span><span class="params">(Node head)</span></span>&#123;</span><br><span class="line">    <span class="comment">//ringMeetNode可以在isCycle()中获得</span></span><br><span class="line">    Node p1 = head, p2 = ringMeetNode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(p1 != p2)&#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法之旅 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 双指针 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>快乐数</title>
       <link href="/2019/10/27/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/LeetCode/%E5%BF%AB%E4%B9%90%E6%95%B0/"/>
       <url>/2019/10/27/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/LeetCode/%E5%BF%AB%E4%B9%90%E6%95%B0/</url>
@@ -1573,33 +1600,6 @@
             <tag> 数 </tag>
             
             <tag> LeetCode </tag>
-            
-            <tag> 双指针 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>判断链表有环</title>
-      <link href="/2019/10/27/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/LeetCode/%E5%88%A4%E6%96%AD%E9%93%BE%E8%A1%A8%E6%9C%89%E7%8E%AF/"/>
-      <url>/2019/10/27/%E7%AE%97%E6%B3%95%E4%B9%8B%E6%97%85/LeetCode/%E5%88%A4%E6%96%AD%E9%93%BE%E8%A1%A8%E6%9C%89%E7%8E%AF/</url>
-      
-        <content type="html"><![CDATA[<p>有一个单向链表，如何判断链表是否为有环链表？</p><a id="more"></a><h1 id="hashset法"><a class="markdownIt-Anchor" href="#hashset法"></a> HashSet法</h1><h2 id="思路"><a class="markdownIt-Anchor" href="#思路"></a> 思路</h2><ul><li>创建一个以节点ID为Key的HashSet集合</li><li>遍历链表并加入HashSet，判断是否重复，重复则有环</li></ul><h2 id="复杂度"><a class="markdownIt-Anchor" href="#复杂度"></a> 复杂度</h2><ul><li>时间复杂度O(n)</li><li>空间复杂度O(n)</li></ul><h1 id="双指针追及法"><a class="markdownIt-Anchor" href="#双指针追及法"></a> 双指针追及法</h1><h2 id="思路-2"><a class="markdownIt-Anchor" href="#思路-2"></a> 思路</h2><ul><li>声明两个指针p1，p2，都指向头节点</li><li>p1为慢指针，速度一个节点，p2为快指针，速度两个节点，速度差一个节点</li><li>让两个指针开始跑，两个指针跑完一次，判断两个指针指向的节点是否相同，相同则有环，不同则继续下一次循环<br>这个思路类似于数学上的 <em>追及问题</em>，如果跑道是环形的，快指针会追上慢指针</li></ul><h2 id="复杂度-2"><a class="markdownIt-Anchor" href="#复杂度-2"></a> 复杂度</h2><ul><li>时间复杂度O(n)</li><li>空间复杂度O(1)</li></ul><h2 id="源码"><a class="markdownIt-Anchor" href="#源码"></a> 源码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isCycle</span><span class="params">(Node head)</span></span>&#123;</span><br><span class="line">    Node p1 = head, p2 = head;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(p2 != <span class="keyword">null</span> &amp;&amp; p2.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next.next;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//ringMeetNode可以在这里获得</span></span><br><span class="line">        <span class="keyword">if</span>(p1 == p2)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">public class Node&#123;</span></span><br><span class="line"><span class="comment">    int data;</span></span><br><span class="line"><span class="comment">    Node next;</span></span><br><span class="line"><span class="comment">    Node(int data)&#123;</span></span><br><span class="line"><span class="comment">        this.data = data;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure><h1 id="问题扩展"><a class="markdownIt-Anchor" href="#问题扩展"></a> 问题扩展</h1><h2 id="1如何求出环的长度"><a class="markdownIt-Anchor" href="#1如何求出环的长度"></a> 1.如何求出环的长度</h2><p>当两个指针首次相遇，让两个指针接着前进，并统计前进的循环次数，直到两个指针再次相遇。此时统计前进的循环次数就是环长。</p><h3 id="原理"><a class="markdownIt-Anchor" href="#原理"></a> 原理</h3><p>p1与p2速度差为一个节点，当快指针再次追上慢指针时，快指针多走了慢指针一圈，因此：<br><strong>环长 = 快指针走的步数 - 慢指针走的步数 = 速度差 * 前进次数 = 前进次数</strong></p><h3 id="代码实现"><a class="markdownIt-Anchor" href="#代码实现"></a> 代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getRingLength</span><span class="params">(Node ringMeetNode)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ringLength = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//ringMeetNode可以在isCycle()中获得</span></span><br><span class="line">    Node p1 = ringMeetNode, p2 = ringMeetNode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next.next;</span><br><span class="line">        ringLength++;</span><br><span class="line">        <span class="keyword">if</span>(p1 == p2)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ringLength;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="2如何求入环节点"><a class="markdownIt-Anchor" href="#2如何求入环节点"></a> 2.如何求入环节点</h2><h3 id="原理-2"><a class="markdownIt-Anchor" href="#原理-2"></a> 原理</h3><p>假设从链表头节点到入环的距离时D，从入环点到首次相遇点的距离时S1，从首次相遇点回到入环点的距离时S2</p><ol><li>两次指针首次相遇时，各自所走的距离：</li></ol><ul><li>p1：D + S1</li><li>p2：D + S1 + S2 + S1 = D + 2S1 + S2</li></ul><ol start="2"><li>由于p2的速度是p1的两倍，因此：2(D + S1) = D + 2S1 + S2</li><li>得到 <strong>D = S2</strong>，即：从头节点到入环点的距离 = 从首次相遇点回到入环点的距离</li><li>这样一来，只要把其中一个指针放回头节点，另一个指针保持在远处，然后两个指针的 <strong>速度都是一个节点</strong>，那么：它们 <strong>相遇节点就是入环节点</strong></li></ol><h3 id="代码实现-2"><a class="markdownIt-Anchor" href="#代码实现-2"></a> 代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Node <span class="title">getRingStart</span><span class="params">(Node head)</span></span>&#123;</span><br><span class="line">    <span class="comment">//ringMeetNode可以在isCycle()中获得</span></span><br><span class="line">    Node p1 = head, p2 = ringMeetNode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(p1 != p2)&#123;</span><br><span class="line">        p1 = p1.next;</span><br><span class="line">        p2 = p2.next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> p1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> 算法之旅 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Java </tag>
             
             <tag> 双指针 </tag>
             
@@ -1834,86 +1834,11 @@
     
     
     <entry>
-      <title>JDK-13配置环境</title>
-      <link href="/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/JDK-13%E9%85%8D%E7%BD%AE/"/>
-      <url>/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/JDK-13%E9%85%8D%E7%BD%AE/</url>
-      
-        <content type="html"><![CDATA[<p>目前最新JDK-13的配置环境方法，虽然我也不懂为什么这样弄，但是能用就行。</p><a id="more"></a><h1 id="下载并安装jdk-13"><a class="markdownIt-Anchor" href="#下载并安装jdk-13"></a> 下载并安装JDK-13</h1><p>当然实在 <a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">官网</a> 下载了</p><h1 id="生成jre文件夹"><a class="markdownIt-Anchor" href="#生成jre文件夹"></a> 生成jre文件夹</h1><p>打开cmd，cd到D:\Java\jdk-13(你的安装文件夹) 然后输入并运行命令：bin\jlink.exe --module-path jmods --add-modules java.desktop --output jre</p><h1 id="配置jdk-13环境"><a class="markdownIt-Anchor" href="#配置jdk-13环境"></a> 配置JDK-13环境</h1><h2 id="系统变量添加"><a class="markdownIt-Anchor" href="#系统变量添加"></a> 系统变量添加</h2><ul><li>Java_Home  D:\Java\jdk-13</li><li>ClassPath  .;%Java_Home%\bin;%Java_Home%\lib\dt.jar;%Java_Home%\lib\tools.jar(注意.号)</li></ul><h2 id="系统变量path里追加"><a class="markdownIt-Anchor" href="#系统变量path里追加"></a> 系统变量Path里追加</h2><ul><li>;%Java_Home%\bin;%Java_Home%\jre\bin</li></ul><h1 id="最后检查是否成功"><a class="markdownIt-Anchor" href="#最后检查是否成功"></a> 最后检查是否成功</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java</span><br><span class="line">javac</span><br><span class="line">java -version</span><br></pre></td></tr></table></figure><p>能看到很多东西应该就是成功了，哈哈哈哈哈</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Java </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Hexo+gayhub搭建个人博客</title>
       <link href="/2019/10/12/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/hexo+gayhub/"/>
       <url>/2019/10/12/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/hexo+gayhub/</url>
       
         <content type="html"><![CDATA[<p>经过<strong>学姐</strong>的安利，我用<strong>hexo+gayhub</strong>搭建起了第一个个人博客</p><a id="more"></a><h1 id="准备"><a class="markdownIt-Anchor" href="#准备"></a> 准备</h1><hr><ol><li>你要有个gayhub账号，虽然在国内访问较慢，但是免费，真香</li><li>安装node.js，npm(也可以装cnpm，为npm的淘宝镜像，国内访问速度快）</li><li>安装git</li><li>有台Windows电脑，还有个女朋友</li></ol><hr><h1 id="创建github博客"><a class="markdownIt-Anchor" href="#创建github博客"></a> 创建github博客</h1><h2 id="1-新建仓库"><a class="markdownIt-Anchor" href="#1-新建仓库"></a> 1. 新建仓库</h2><p>在github上新建个仓库，命名规则必须为：<strong><a href="http://xn--6qqv7i14ofosyrb.github.io" target="_blank" rel="noopener">你的用户名.github.io</a></strong>(我也不知道为什么要这样子哈)，如果没钱的话这个就是你以后的博客地址了。</p><h2 id="2绑定域名"><a class="markdownIt-Anchor" href="#2绑定域名"></a> 2.绑定域名</h2><p>由于我没有钱，所以绑定域名就不说了，你可以买个域名，然后把域名的地址跳转到<strong><a href="http://xn--6qqv7i14ofosyrb.github.io" target="_blank" rel="noopener">你的用户名.github.io</a></strong>就行了。</p><h2 id="3配置ssh"><a class="markdownIt-Anchor" href="#3配置ssh"></a> 3.配置SSH</h2><p>这个有什么用呢？给你的博客加个密，防止其他人提交代码。<br>打开cmd输入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/. ssh #检查本机已存在的ssh密钥</span><br></pre></td></tr></table></figure><p>如果提示：No such file or directory 说明你是第一次使用git。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C &quot;邮件地址&quot;</span><br></pre></td></tr></table></figure><p>连续三次回车就行了<br>然后连续3次回车，最终会生成一个文件在用户目录下，打开用户目录，找到 <strong>.ssh\id_rsa.pub</strong> 文件，记事本打开并复制里面的内容，打开你的github主页，进入个人设置 -&gt; SSH and GPG keys -&gt; New SSH key：<br>将刚复制的内容粘贴到key那里，title随便填，保存.</p><h3 id="测试是否成功"><a class="markdownIt-Anchor" href="#测试是否成功"></a> 测试是否成功</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com # 注意邮箱地址不用改</span><br></pre></td></tr></table></figure><p>然后yes就行了。<br>此外你还配置：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;****&quot;// 你的github用户名，非昵称</span><br><span class="line">$ git config --global user.email  &quot;xxx@qq.com&quot;// 填写你的github注册邮箱</span><br></pre></td></tr></table></figure><p>这个具体是什么呢？我也不知道呀</p><h1 id="安装hexo"><a class="markdownIt-Anchor" href="#安装hexo"></a> 安装hexo</h1><h2 id="首先我们安装个cnpm"><a class="markdownIt-Anchor" href="#首先我们安装个cnpm"></a> 首先我们安装个cnpm</h2><p>前面也说过了，加快下载速度。<br>我们要用npm下载cnpm，然后以后都用cnpm代替npm (npm:???!!!)<br>在你的blog文件夹，在空白处点击鼠标右键，选择 <strong>Git Bash Here</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install cnpm -g --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure><ul><li>开始安装hexo</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cnpm intall -g hexo-cli </span><br><span class="line">#这里原本是 npm intall -g hexo-cli ，但是下载速度较慢所以切换成cnpm，以后都如此</span><br></pre></td></tr></table></figure><p>验证是否安装成功</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo -v</span><br></pre></td></tr></table></figure><p>如果你看不到error，那应该就是成功了，哈</p><ul><li>重要的一步来了，初始化</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure><p>如果最后一行出现 <strong>Start blogging with Hexo!</strong><br>恭喜你，可以开始编写博客了</p><h2 id="先测试一下"><a class="markdownIt-Anchor" href="#先测试一下"></a> 先测试一下</h2><p>我们经常用的指令是以下几个：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo clean #用来清理缓存文件</span><br><span class="line">hexo g     #hexo generate的缩写，生成文件</span><br><span class="line">hexo s     #hexo serve的缩写，生成本地预览</span><br><span class="line">hexo d     #hexo deploy的缩写，部署到服务器</span><br></pre></td></tr></table></figure><p>还有一个组合指令</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo s -g #生成并本地预览</span><br><span class="line">hexo d -g #生成并部署</span><br></pre></td></tr></table></figure><ul><li>测试本地运行</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure><p>打开浏览器，进入 <strong>localhost:4000</strong>，你会看到hexo自带的一个主题还有 <strong>Hello World</strong></p><h1 id="更换主题"><a class="markdownIt-Anchor" href="#更换主题"></a> 更换主题</h1><p>我最喜欢的就是美化了</p><ul><li>由于网上比较推荐的是 <strong>yilia</strong>，所以我下载了它。<br>首先下载这个主题，在你的文件夹你 <strong>Git Bash Here</strong></li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/litten/hexo-theme-yilia.git themes/yilia</span><br></pre></td></tr></table></figure><p>下载的主题都在 <strong>themes</strong> 文件夹<br>修改源文件夹下的 <strong>_config.yml</strong> 中的 <strong>theme: landscape</strong> 改为<strong>theme: yilia</strong> ，然后重新执行 <strong>hexo g</strong> 来重新生成。<br><strong>hexo s</strong> 后进入 <strong>localhost:4000</strong> 就能预览你的主题了。<br>如果出现一些莫名其妙的问题，可以先执行 <strong>hexo clean</strong> 来清理一下内容，然后再来重新生成和发布。</p><ul><li>你可以在 <strong>themes</strong>文件夹下的 <strong>_config.yml</strong> 修改有关主题的内容，这里不多加详述了。</li></ul><h1 id="部署到github"><a class="markdownIt-Anchor" href="#部署到github"></a> 部署到Github</h1><p>如果你一切都配置好了，发布上传很容易，一句 <strong>hexo d</strong> 就搞定，当然关键还是你要把所有东西配置好。</p><ul><li>首先，<strong>ssh key</strong>肯定要配置好。</li><li>其次，配置 <strong>_config.yml</strong> 中有关 <strong>deploy</strong>的部分：</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: github</span><br><span class="line">  repository: https://github.com/******.github.io.git #你的仓库地址</span><br><span class="line">  branch: master</span><br><span class="line">#注意空格</span><br></pre></td></tr></table></figure><ul><li>此外还装一个插件</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure><ul><li>最后的最后<br><strong>hexo d</strong>就能把你的博客部署到GitHub上了。<br>以后你可以打开 <strong><a href="http://xn--6qqv7i14ofosyrb.github.io" target="_blank" rel="noopener">你的用户名.github.io</a></strong>，进入你的博客。<br>#可以写博客了</li><li>由于我基本不会命令行，所以我没用命令行。<br>你可以直接新建一个 <strong>.md</strong>的文件，然后用 <strong>Markdown</strong>的编辑器打开就可以开始写你的博客了（我用的编辑器是 <strong>VSCode</strong> + <strong>Markdown Preview Enhanced插件</strong>），这里的 <strong>.md</strong>的文件使用 <strong>Markdown</strong>语法写的，十分简单 ，几分钟速成。<br>写好后，把文件放在你的文件夹下的 <strong>source/_posts</strong>就行了。<br>然后用组合命令行</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d -g</span><br></pre></td></tr></table></figure><p>就能直接生成本地文件并且部署到服务器上。</p><h1 id="最终效果"><a class="markdownIt-Anchor" href="#最终效果"></a> 最终效果</h1><p>也就是本博客 <strong><a href="http://EasonZzZz.github.io" target="_blank" rel="noopener">EasonZzZz.github.io</a></strong><br><img alt data-src="http://pxij6pdrn.bkt.clouddn.com/static/images/biubiubiu.gif" class="lazyload"></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 杂七杂八 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Hexo </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Java学习之旅————单例模式</title>
-      <link href="/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
-      <url>/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
-      
-        <content type="html"><![CDATA[<p>郭克华老师在上课讲到的一种设计模式—单例模式。<br>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建 <strong>单一对象</strong> 的最佳方式。</p><a id="more"></a><h1 id="那么问题来了为什么创建单一对象呢"><a class="markdownIt-Anchor" href="#那么问题来了为什么创建单一对象呢"></a> 那么问题来了，为什么创建单一对象呢?</h1><p>有一些实例只需要创建一次就够了，例如：一个班级只有一个班主任，Windows系统只有一个Task Manager(任务管理器)</p><h1 id="单例模式有什么优缺点呢"><a class="markdownIt-Anchor" href="#单例模式有什么优缺点呢"></a> 单例模式有什么优缺点呢？</h1><h2 id="优点"><a class="markdownIt-Anchor" href="#优点"></a> 优点</h2><ul><li>1.在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销毁实例（比如管理学院首页页面缓存）。<br></li><li>2.避免对资源的多重占用（比如写文件操作）。</li><li></li></ul><h2 id="缺点"><a class="markdownIt-Anchor" href="#缺点"></a> 缺点</h2><ul><li>没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外面怎么样来实例化。<br></li></ul><hr><h1 id="如何实现单例模式"><a class="markdownIt-Anchor" href="#如何实现单例模式"></a> 如何实现单例模式</h1><p>我们将创建一个 SingleObject 类。SingleObject 类有它的 <strong>私有构造函数</strong> 和本身的一个 <strong>静态实例</strong>。<br>SingleObject 类提供了一个静态方法，供外界获取它的静态实例。SingletonPatternDemo，我们的演示类使用 SingleObject 类来获取 SingleObject 对象。<br><img alt data-src="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/20190925152915.png" class="lazyload"></p><h2 id="step-1"><a class="markdownIt-Anchor" href="#step-1"></a> Step 1</h2><p>创建一个SingleObject类</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingleObject</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建SingleObject的一个私有静态对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingleObject instance = <span class="keyword">new</span> SingObject();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造函数私有化</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingleObject</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//给外面一个接口，返回唯一可用对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingleObject <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="step-2"><a class="markdownIt-Anchor" href="#step-2"></a> Step 2</h2><p>在外界声明个SingleObject的引用，获取该唯一对象</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SingleObject instance = SingleObject.getInstance();</span><br></pre></td></tr></table></figure><hr><h1 id="这里的实现方式只是一个大致的抽象方法更详细的如下"><a class="markdownIt-Anchor" href="#这里的实现方式只是一个大致的抽象方法更详细的如下"></a> 这里的实现方式只是一个大致的抽象方法，更详细的如下</h1><ul><li>懒汉式—线程不安全：最基础的实现方式，线程上下文单例，不需要共享给所有线程，也不需要加synchronize之类的锁，以提高性能</li><li>懒汉式—线程安全：加上synchronize之类保证线程安全的基础上的懒汉模式，相对性能很低，大部分时间并不需要同步</li><li>饿汉方式。指全局的单例实例在类装载时构建。</li><li>双检锁式。在懒汉式基础上利用synchronize关键字和volatile关键字确保第一次创建时没有线程间竞争而产生多个实例，仅第一次创建时同步，性能相对较高</li><li>登记式。作为创建类的全局属性存在，创建类被装载时创建</li><li>枚举。java中枚举类本身也是一种单例模式</li></ul><hr><h1 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h1><p>单例模式是设计模式中最简单的形式之一。这一模式的目的是使得类的一个对象成为系统中的唯一实例。它有很多种实现方式，但是文中只给出了大致的思路，以后再学习更进一步的实现方式。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Java学习 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Java </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>npm(cnpm)安装/卸载模块</title>
-      <link href="/2019/10/12/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/cnpm%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD%E6%A8%A1%E5%9D%97/"/>
-      <url>/2019/10/12/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/cnpm%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD%E6%A8%A1%E5%9D%97/</url>
-      
-        <content type="html"><![CDATA[<p>因为发现七牛云不行，所以卸载了有关的插件。</p><a id="more"></a><h1 id="安装模块"><a class="markdownIt-Anchor" href="#安装模块"></a> 安装模块</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install xxx      #利用 npm 安装xxx模块到当前命令行所在目录</span><br><span class="line">npm install -g xxx   #利用npm安装全局模块xxx</span><br></pre></td></tr></table></figure><h1 id="本地安装时将模块写入-packagejson"><a class="markdownIt-Anchor" href="#本地安装时将模块写入-packagejson"></a> 本地安装时将模块写入 <strong>package.json</strong></h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install xxx             #安装但不写入package.json</span><br><span class="line">npm install xxx –save       #安装并写入package.json的”dependencies”中</span><br><span class="line">npm install xxx –save -dev  #安装并写入package.json的”devDependencies”中</span><br></pre></td></tr></table></figure><h1 id="删除模块"><a class="markdownIt-Anchor" href="#删除模块"></a> 删除模块</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall xxx      #删除xxx模块</span><br><span class="line">npm uninstall -g xxx   #删除全局模块xxx</span><br></pre></td></tr></table></figure><p><img alt data-src="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/biubiubiu.gif" class="lazyload"></p>]]></content>
       
       
       <categories>
@@ -1951,6 +1876,81 @@
         <tags>
             
             <tag> Hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>npm(cnpm)安装/卸载模块</title>
+      <link href="/2019/10/12/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/cnpm%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD%E6%A8%A1%E5%9D%97/"/>
+      <url>/2019/10/12/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/cnpm%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD%E6%A8%A1%E5%9D%97/</url>
+      
+        <content type="html"><![CDATA[<p>因为发现七牛云不行，所以卸载了有关的插件。</p><a id="more"></a><h1 id="安装模块"><a class="markdownIt-Anchor" href="#安装模块"></a> 安装模块</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install xxx      #利用 npm 安装xxx模块到当前命令行所在目录</span><br><span class="line">npm install -g xxx   #利用npm安装全局模块xxx</span><br></pre></td></tr></table></figure><h1 id="本地安装时将模块写入-packagejson"><a class="markdownIt-Anchor" href="#本地安装时将模块写入-packagejson"></a> 本地安装时将模块写入 <strong>package.json</strong></h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install xxx             #安装但不写入package.json</span><br><span class="line">npm install xxx –save       #安装并写入package.json的”dependencies”中</span><br><span class="line">npm install xxx –save -dev  #安装并写入package.json的”devDependencies”中</span><br></pre></td></tr></table></figure><h1 id="删除模块"><a class="markdownIt-Anchor" href="#删除模块"></a> 删除模块</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall xxx      #删除xxx模块</span><br><span class="line">npm uninstall -g xxx   #删除全局模块xxx</span><br></pre></td></tr></table></figure><p><img alt data-src="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/biubiubiu.gif" class="lazyload"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 杂七杂八 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JDK-13配置环境</title>
+      <link href="/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/JDK-13%E9%85%8D%E7%BD%AE/"/>
+      <url>/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/JDK-13%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<p>目前最新JDK-13的配置环境方法，虽然我也不懂为什么这样弄，但是能用就行。</p><a id="more"></a><h1 id="下载并安装jdk-13"><a class="markdownIt-Anchor" href="#下载并安装jdk-13"></a> 下载并安装JDK-13</h1><p>当然实在 <a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">官网</a> 下载了</p><h1 id="生成jre文件夹"><a class="markdownIt-Anchor" href="#生成jre文件夹"></a> 生成jre文件夹</h1><p>打开cmd，cd到D:\Java\jdk-13(你的安装文件夹) 然后输入并运行命令：bin\jlink.exe --module-path jmods --add-modules java.desktop --output jre</p><h1 id="配置jdk-13环境"><a class="markdownIt-Anchor" href="#配置jdk-13环境"></a> 配置JDK-13环境</h1><h2 id="系统变量添加"><a class="markdownIt-Anchor" href="#系统变量添加"></a> 系统变量添加</h2><ul><li>Java_Home  D:\Java\jdk-13</li><li>ClassPath  .;%Java_Home%\bin;%Java_Home%\lib\dt.jar;%Java_Home%\lib\tools.jar(注意.号)</li></ul><h2 id="系统变量path里追加"><a class="markdownIt-Anchor" href="#系统变量path里追加"></a> 系统变量Path里追加</h2><ul><li>;%Java_Home%\bin;%Java_Home%\jre\bin</li></ul><h1 id="最后检查是否成功"><a class="markdownIt-Anchor" href="#最后检查是否成功"></a> 最后检查是否成功</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java</span><br><span class="line">javac</span><br><span class="line">java -version</span><br></pre></td></tr></table></figure><p>能看到很多东西应该就是成功了，哈哈哈哈哈</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Java学习之旅————单例模式</title>
+      <link href="/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/"/>
+      <url>/2019/10/12/%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0/Java%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
+      
+        <content type="html"><![CDATA[<p>郭克华老师在上课讲到的一种设计模式—单例模式。<br>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建 <strong>单一对象</strong> 的最佳方式。</p><a id="more"></a><h1 id="那么问题来了为什么创建单一对象呢"><a class="markdownIt-Anchor" href="#那么问题来了为什么创建单一对象呢"></a> 那么问题来了，为什么创建单一对象呢?</h1><p>有一些实例只需要创建一次就够了，例如：一个班级只有一个班主任，Windows系统只有一个Task Manager(任务管理器)</p><h1 id="单例模式有什么优缺点呢"><a class="markdownIt-Anchor" href="#单例模式有什么优缺点呢"></a> 单例模式有什么优缺点呢？</h1><h2 id="优点"><a class="markdownIt-Anchor" href="#优点"></a> 优点</h2><ul><li>1.在内存里只有一个实例，减少了内存的开销，尤其是频繁的创建和销毁实例（比如管理学院首页页面缓存）。<br></li><li>2.避免对资源的多重占用（比如写文件操作）。</li><li></li></ul><h2 id="缺点"><a class="markdownIt-Anchor" href="#缺点"></a> 缺点</h2><ul><li>没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外面怎么样来实例化。<br></li></ul><hr><h1 id="如何实现单例模式"><a class="markdownIt-Anchor" href="#如何实现单例模式"></a> 如何实现单例模式</h1><p>我们将创建一个 SingleObject 类。SingleObject 类有它的 <strong>私有构造函数</strong> 和本身的一个 <strong>静态实例</strong>。<br>SingleObject 类提供了一个静态方法，供外界获取它的静态实例。SingletonPatternDemo，我们的演示类使用 SingleObject 类来获取 SingleObject 对象。<br><img alt data-src="https://raw.githubusercontent.com/EasonZzZz/BlogPic/master/img/20190925152915.png" class="lazyload"></p><h2 id="step-1"><a class="markdownIt-Anchor" href="#step-1"></a> Step 1</h2><p>创建一个SingleObject类</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingleObject</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建SingleObject的一个私有静态对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SingleObject instance = <span class="keyword">new</span> SingObject();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造函数私有化</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SingleObject</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//给外面一个接口，返回唯一可用对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SingleObject <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="step-2"><a class="markdownIt-Anchor" href="#step-2"></a> Step 2</h2><p>在外界声明个SingleObject的引用，获取该唯一对象</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SingleObject instance = SingleObject.getInstance();</span><br></pre></td></tr></table></figure><hr><h1 id="这里的实现方式只是一个大致的抽象方法更详细的如下"><a class="markdownIt-Anchor" href="#这里的实现方式只是一个大致的抽象方法更详细的如下"></a> 这里的实现方式只是一个大致的抽象方法，更详细的如下</h1><ul><li>懒汉式—线程不安全：最基础的实现方式，线程上下文单例，不需要共享给所有线程，也不需要加synchronize之类的锁，以提高性能</li><li>懒汉式—线程安全：加上synchronize之类保证线程安全的基础上的懒汉模式，相对性能很低，大部分时间并不需要同步</li><li>饿汉方式。指全局的单例实例在类装载时构建。</li><li>双检锁式。在懒汉式基础上利用synchronize关键字和volatile关键字确保第一次创建时没有线程间竞争而产生多个实例，仅第一次创建时同步，性能相对较高</li><li>登记式。作为创建类的全局属性存在，创建类被装载时创建</li><li>枚举。java中枚举类本身也是一种单例模式</li></ul><hr><h1 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h1><p>单例模式是设计模式中最简单的形式之一。这一模式的目的是使得类的一个对象成为系统中的唯一实例。它有很多种实现方式，但是文中只给出了大致的思路，以后再学习更进一步的实现方式。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
             
         </tags>
       
